@@ -96,4 +96,13 @@ public class GoodServiceImpl implements GoodService {
         Page<Good>page=goodMapper.list(searchKey,goodNo,startDate,endDate,brandId,onSale,categoryId,hot,isNew,freight);
         return new PageResult(page);
     }
+
+    @Override
+    public DataRet<String> deleteById(Long id) {
+        Integer result=goodMapper.deleteById(id);
+        if (result<=0){
+            return new  DataRet<>("ERROR","删除失败");
+        }
+        return new DataRet<>("删除成功");
+    }
 }

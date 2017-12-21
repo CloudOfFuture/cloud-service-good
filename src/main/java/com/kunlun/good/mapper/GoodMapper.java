@@ -57,4 +57,13 @@ public interface GoodMapper {
                     @Param("hot") String hot,
                     @Param("isNew") String isNew,
                     @Param("freight") String freight);
+
+
+    /**
+     * 根据id删除商品
+     *
+     * @param id
+     * @return
+     */
+    Integer deleteById(@Param("id") Long id);
 }

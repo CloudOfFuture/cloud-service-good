@@ -121,4 +121,11 @@
         <if test="brandId!=null">AND brand_id=#{brandId}</if>
         <if test="categoryId!=null">AND category_id=#{category_id}</if>
     </select>
+
+    <update id="deleteById">
+        UPDATE t_good
+        SET status='UN_NORMAL',
+        last_update_date=now()
+        AND on_sale='OFF_SALE'
+    </update>
 </mapper>

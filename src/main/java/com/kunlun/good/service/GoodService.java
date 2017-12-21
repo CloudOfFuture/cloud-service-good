@@ -50,4 +50,13 @@ public interface GoodService {
     PageResult findByCondition(Integer pageNo, Integer pageSize, String searchKey, String goodNo,
                                Date startDate, Date endDate, Long brandId, String onSale, Long categoryId,
                                String hot, String isNew, String freight);
+
+
+    /**
+     * 根据id删除商品
+     *
+     * @param id
+     * @return
+     */
+    DataRet<String> deleteById(Long id);
 }

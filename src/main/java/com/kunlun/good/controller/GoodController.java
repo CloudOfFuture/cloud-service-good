@@ -82,4 +82,10 @@ public class GoodController {
         return goodService.findByCondition(pageNo, pageSize, searchKey, goodNo, startDate, endDate,
                 brandId, onSale, categoryId, hot, isNew, freight);
     }
+
+
+    @PostMapping("/deleteById")
+    public DataRet<String> deleteById(@RequestParam(value = "id") Long id){
+        return goodService.deleteById(id);
+    }
 }
