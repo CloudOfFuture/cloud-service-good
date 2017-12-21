@@ -3,6 +3,8 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kunlun.good.GoodMapper">
+
+    <!--商品新增-->
     <insert id="add" parameterType="com.kunlun.entity.Good">
         <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
             SELECT LAST_INSERT_ID()
@@ -30,7 +32,7 @@
         rich_content,
         seo,
         freight_fee)
-        VALUE (
+        VALUES (
         #{goodName},
         #{description},
         #{promotion},
@@ -55,6 +57,8 @@
         #{freightFee})
     </insert>
 
+
+    <!--获取商品详情-->
     <select id="findById" resultType="com.kunlun.entity.Good">
         SELECT
         id,
@@ -80,5 +84,40 @@
         main_image_url,
         freight_fee
         FROM t_good WHERE id=#{id}
+    </select>
+
+    <!--分页查询-->
+    <select id="list" resultType="com.kunlun.entity.Good">
+        id,
+        good_name,
+        description,
+        promotion,
+        price,
+        sale_volume,
+        discount,
+        stock,
+        on_sale,
+        hot,
+        seo,
+        is_new,
+        freight,
+        brand_id,
+        seller_id,
+        visit_total,
+        good_no,
+        audit,
+        status,
+        rich_content,
+        main_image_url,
+        freight_fee
+        FROM t_good WHERE 1=1
+        <if test="searchKey!=null">AND CONCAT_WS('',good_name,good_no) LIKE #{searchKey}</if>
+        <if test="goodNo!=null">AND good_no=#{goodNo}</if>
+        <if test="onSale!=null">AND on_sale=#{onSale}</if>
+        <if test="hot!=null">AND hot=#{hot}</if>
+        <if test="isNew!=null">AND is_new=#{isNew}</if>
+        <if test="freight!=null">AND freight=#{freight}</if>
+        <if test="brandId!=null">AND brand_id=#{brandId}</if>
+        <if test="categoryId!=null">AND category_id=#{category_id}</if>
     </select>
 </mapper>

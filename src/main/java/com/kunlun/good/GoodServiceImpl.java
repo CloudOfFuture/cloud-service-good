@@ -1,9 +1,15 @@
 package com.kunlun.good;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.util.StringUtil;
 import com.kunlun.entity.Good;
 import com.kunlun.result.DataRet;
+import com.kunlun.result.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 /**
  * @author by hmy
@@ -52,5 +58,40 @@ public class GoodServiceImpl implements GoodService{
         }
         //TODO 获取图片列表
         return new DataRet<>(good);
+    }
+
+    /**
+     * 分页查询
+     *
+     * @param pageNo
+     * @param pageSize
+     * @param searchKey
+     * @param goodNo
+     * @param startDate
+     * @param endDate
+     * @param brandId
+     * @param onSale
+     * @param categoryId
+     * @param hot
+     * @param isNew
+     * @param freight
+     * @return
+     */
+    @Override
+    public PageResult findByCondition(Integer pageNo, Integer pageSize, String searchKey, String goodNo,
+                                      Date startDate, Date endDate, Long brandId, String onSale, Long categoryId,
+                                      String hot, String isNew, String freight) {
+        if (StringUtil.isEmpty(String.valueOf(pageNo))|| StringUtil.isEmpty(String.valueOf(pageSize))){
+            return new PageResult("ERROR","参数错误");
+        }
+        PageHelper.startPage(pageNo,pageSize);
+        if (StringUtil.isEmpty(searchKey)){
+            searchKey=null;
+        }
+        if (!StringUtil.isEmpty(searchKey)){
+            searchKey=("%"+searchKey+"%");
+        }
+        Page<Good>page=goodMapper.list(searchKey,goodNo,startDate,endDate,brandId,onSale,categoryId,hot,isNew,freight);
+        return new PageResult(page);
     }
 }

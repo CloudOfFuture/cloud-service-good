@@ -2,6 +2,9 @@ package com.kunlun.good;
 
 import com.kunlun.entity.Good;
 import com.kunlun.result.DataRet;
+import com.kunlun.result.PageResult;
+
+import java.util.Date;
 
 /**
  * @author by hmy
@@ -25,4 +28,26 @@ public interface GoodService {
      * @return
      */
     DataRet<Good> findById(Long id);
+
+
+    /**
+     * 分页查询
+     *
+     * @param pageNo
+     * @param pageSize
+     * @param searchKey
+     * @param goodNo
+     * @param startDate
+     * @param endDate
+     * @param brandId
+     * @param onSale
+     * @param categoryId
+     * @param hot
+     * @param isNew
+     * @param freight
+     * @return
+     */
+    PageResult findByCondition(Integer pageNo, Integer pageSize, String searchKey, String goodNo,
+                               Date startDate, Date endDate, Long brandId, String onSale, Long categoryId,
+                               String hot, String isNew, String freight);
 }
