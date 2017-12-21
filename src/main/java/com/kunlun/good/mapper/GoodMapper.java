@@ -1,4 +1,4 @@
-package com.kunlun.good;
+package com.kunlun.good.mapper;
 
 import com.github.pagehelper.Page;
 import com.kunlun.entity.Good;

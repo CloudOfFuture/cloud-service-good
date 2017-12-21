@@ -1,9 +1,10 @@
-package com.kunlun.good;
+package com.kunlun.good.service;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.util.StringUtil;
 import com.kunlun.entity.Good;
+import com.kunlun.good.mapper.GoodMapper;
 import com.kunlun.result.DataRet;
 import com.kunlun.result.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ public class GoodServiceImpl implements GoodService {
 
     @Autowired
     private GoodMapper goodMapper;
+
 
     /**
      * 创建商品

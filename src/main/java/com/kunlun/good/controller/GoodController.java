@@ -1,6 +1,7 @@
-package com.kunlun.good;
+package com.kunlun.good.controller;
 
 import com.kunlun.entity.Good;
+import com.kunlun.good.service.GoodService;
 import com.kunlun.result.DataRet;
 import com.kunlun.result.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,16 +69,16 @@ public class GoodController {
     @GetMapping("/findByCondition")
     public PageResult findByCondition(@RequestParam(value = "page_no") Integer pageNo,
                                       @RequestParam(value = "page_size") Integer pageSize,
-                                      @RequestParam(value = "search_key") String searchKey,
-                                      @RequestParam(value = "good_no") String goodNo,
-                                      @RequestParam(value = "start_date") Date startDate,
-                                      @RequestParam(value = "end_date") Date endDate,
-                                      @RequestParam(value = "brand_id") Long brandId,
-                                      @RequestParam(value = "on_sale") String onSale,
-                                      @RequestParam(value = "category_id") Long categoryId,
-                                      @RequestParam(value = "hot") String hot,
-                                      @RequestParam(value = "is_new") String isNew,
-                                      @RequestParam(value = "freight") String freight) {
+                                      @RequestParam(value = "search_key",required = false) String searchKey,
+                                      @RequestParam(value = "good_no",required = false) String goodNo,
+                                      @RequestParam(value = "start_date",required = false) Date startDate,
+                                      @RequestParam(value = "end_date",required = false) Date endDate,
+                                      @RequestParam(value = "brand_id",required = false) Long brandId,
+                                      @RequestParam(value = "on_sale",required = false) String onSale,
+                                      @RequestParam(value = "category_id",required = false) Long categoryId,
+                                      @RequestParam(value = "hot",required = false) String hot,
+                                      @RequestParam(value = "is_new",required = false) String isNew,
+                                      @RequestParam(value = "freight",required = false) String freight) {
         return goodService.findByCondition(pageNo, pageSize, searchKey, goodNo, startDate, endDate,
                 brandId, onSale, categoryId, hot, isNew, freight);
     }
