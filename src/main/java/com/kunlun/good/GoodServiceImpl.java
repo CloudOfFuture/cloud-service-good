@@ -8,6 +8,7 @@ import com.kunlun.result.DataRet;
 import com.kunlun.result.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Date;
 
@@ -21,6 +22,7 @@ public class GoodServiceImpl implements GoodService{
 
     @Autowired
     private GoodMapper goodMapper;
+
 
     /**
      * 创建商品
