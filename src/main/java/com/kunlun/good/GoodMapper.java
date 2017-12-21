@@ -11,5 +11,11 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface GoodMapper {
 
+    /**
+     * 创建商品
+     *
+     * @param good
+     * @return
+     */
     Integer add(Good good);
 }
