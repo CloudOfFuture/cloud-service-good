@@ -1,6 +1,7 @@
-package com.kunlun.good;
+package com.kunlun.good.controller;
 
 import com.kunlun.entity.Good;
+import com.kunlun.good.service.GoodService;
 import com.kunlun.result.DataRet;
 import com.kunlun.result.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
