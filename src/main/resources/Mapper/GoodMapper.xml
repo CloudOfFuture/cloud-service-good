@@ -54,4 +54,31 @@
         #{seo},
         #{freightFee})
     </insert>
+
+    <select id="findById" resultType="com.kunlun.entity.Good">
+        SELECT
+        id,
+        good_name,
+        description,
+        promotion,
+        price,
+        sale_volume,
+        discount,
+        stock,
+        on_sale,
+        hot,
+        seo,
+        is_new,
+        freight,
+        brand_id,
+        seller_id,
+        visit_total,
+        good_no,
+        audit,
+        status,
+        rich_content,
+        main_image_url,
+        freight_fee
+        FROM t_good WHERE id=#{id}
+    </select>
 </mapper>

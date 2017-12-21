@@ -1,14 +1,11 @@
 package com.kunlun.good;
 
-import com.alibaba.fastjson.JSONObject;
 import com.kunlun.entity.Good;
-import com.kunlun.entity.MallImage;
 import com.kunlun.result.DataRet;
-import com.sun.xml.internal.bind.v2.TODO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+
 
 /**
  * @author by hmy
@@ -36,8 +33,15 @@ public class GoodController {
         return goodService.add(good);
     }
 
+
+    /**
+     * 获取商品详情
+     *
+     * @param id
+     * @return
+     */
     @GetMapping("/findById")
-    public DataRet<Good> findById(){
-        return null;
+    public DataRet<Good> findById(@RequestParam(value = "id") Long id){
+        return goodService.findById(id);
     }
 }

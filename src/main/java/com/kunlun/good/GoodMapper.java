@@ -2,6 +2,7 @@ package com.kunlun.good;
 
 import com.kunlun.entity.Good;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * @author by hmy
@@ -18,4 +19,12 @@ public interface GoodMapper {
      * @return
      */
     Integer add(Good good);
+
+    /**
+     * 获取商品详情
+     *
+     * @param id
+     * @return
+     */
+    Good findById(@Param("id") Long id);
 }

@@ -33,4 +33,24 @@ public class GoodServiceImpl implements GoodService{
         }
         return new DataRet<>("添加成功");
     }
+
+
+    /**
+     * 获取商品详情
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public DataRet<Good> findById(Long id) {
+        if (id==null){
+            return new DataRet<>("ERROR","id为空");
+        }
+        Good good=goodMapper.findById(id);
+        if (good==null){
+            return new DataRet<>("ERROR","未找到");
+        }
+        //TODO 获取图片列表
+        return new DataRet<>(good);
+    }
 }

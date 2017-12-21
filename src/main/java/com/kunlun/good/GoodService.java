@@ -17,4 +17,12 @@ public interface GoodService {
      * @return
      */
     DataRet<String> add(Good good);
+
+    /**
+     * 获取详情
+     *
+     * @param id
+     * @return
+     */
+    DataRet<Good> findById(Long id);
 }
