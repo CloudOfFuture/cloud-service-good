@@ -17,7 +17,7 @@ import java.util.Date;
  * @created on 2017-12-21.
  */
 @Service
-public class GoodServiceImpl implements GoodService{
+public class GoodServiceImpl implements GoodService {
 
     @Autowired
     private GoodMapper goodMapper;
@@ -30,12 +30,12 @@ public class GoodServiceImpl implements GoodService{
      */
     @Override
     public DataRet<String> add(Good good) {
-        if (good==null){
-            return new DataRet<>("ERROR","添加失败");
+        if (good == null) {
+            return new DataRet<>("ERROR", "添加失败");
         }
-        Integer result=goodMapper.add(good);
-        if (result<=0){
-            return new DataRet<>("ERROR","添加失败");
+        Integer result = goodMapper.add(good);
+        if (result <= 0) {
+            return new DataRet<>("ERROR", "添加失败");
         }
         return new DataRet<>("添加成功");
     }
@@ -49,12 +49,12 @@ public class GoodServiceImpl implements GoodService{
      */
     @Override
     public DataRet<Good> findById(Long id) {
-        if (id==null){
-            return new DataRet<>("ERROR","id为空");
+        if (id == null) {
+            return new DataRet<>("ERROR", "id为空");
         }
-        Good good=goodMapper.findById(id);
-        if (good==null){
-            return new DataRet<>("ERROR","未找到");
+        Good good = goodMapper.findById(id);
+        if (good == null) {
+            return new DataRet<>("ERROR", "未找到");
         }
         //TODO 获取图片列表
         return new DataRet<>(good);
@@ -81,17 +81,32 @@ public class GoodServiceImpl implements GoodService{
     public PageResult findByCondition(Integer pageNo, Integer pageSize, String searchKey, String goodNo,
                                       Date startDate, Date endDate, Long brandId, String onSale, Long categoryId,
                                       String hot, String isNew, String freight) {
-        if (StringUtil.isEmpty(String.valueOf(pageNo))|| StringUtil.isEmpty(String.valueOf(pageSize))){
-            return new PageResult("ERROR","参数错误");
+        if (StringUtil.isEmpty(String.valueOf(pageNo)) || StringUtil.isEmpty(String.valueOf(pageSize))) {
+            return new PageResult("ERROR", "参数错误");
         }
-        PageHelper.startPage(pageNo,pageSize);
-        if (StringUtil.isEmpty(searchKey)){
-            searchKey=null;
+        PageHelper.startPage(pageNo, pageSize);
+        if (StringUtil.isEmpty(searchKey)) {
+            searchKey = null;
         }
-        if (!StringUtil.isEmpty(searchKey)){
-            searchKey=("%"+searchKey+"%");
+        if (!StringUtil.isEmpty(searchKey)) {
+            searchKey = ("%" + searchKey + "%");
         }
-        Page<Good>page=goodMapper.list(searchKey,goodNo,startDate,endDate,brandId,onSale,categoryId,hot,isNew,freight);
+        Page<Good> page = goodMapper.list(searchKey, goodNo, startDate, endDate, brandId, onSale, categoryId, hot,
+                isNew, freight);
         return new PageResult(page);
+    }
+
+    /**
+     * 商品信息检查
+     *
+     * @param goodId
+     * @return
+     */
+    @Override
+    public DataRet<String> checkGood(Long goodId) {
+
+        Good good = goodMapper.findById(goodId);
+
+        return null;
     }
 }

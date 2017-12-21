@@ -81,4 +81,16 @@ public class GoodController {
         return goodService.findByCondition(pageNo, pageSize, searchKey, goodNo, startDate, endDate,
                 brandId, onSale, categoryId, hot, isNew, freight);
     }
+
+    /**
+     * 商品信息检查
+     *
+     * @param goodId
+     * @return
+     */
+    @GetMapping("/checkGood")
+    public DataRet<String> checkGood(@RequestParam("good_id") Long goodId) {
+
+        return null;
+    }
 }

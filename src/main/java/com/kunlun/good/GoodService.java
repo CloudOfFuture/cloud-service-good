@@ -50,4 +50,12 @@ public interface GoodService {
     PageResult findByCondition(Integer pageNo, Integer pageSize, String searchKey, String goodNo,
                                Date startDate, Date endDate, Long brandId, String onSale, Long categoryId,
                                String hot, String isNew, String freight);
+
+    /**
+     * 商品信息检查
+     *
+     * @param goodId
+     * @return
+     */
+    DataRet<String> checkGood(Long goodId);
 }
