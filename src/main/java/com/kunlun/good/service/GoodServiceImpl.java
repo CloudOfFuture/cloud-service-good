@@ -95,8 +95,7 @@ public class GoodServiceImpl implements GoodService {
         if (!StringUtil.isEmpty(searchKey)) {
             searchKey = ("%" + searchKey + "%");
         }
-        Page<Good> page = goodMapper.list(searchKey, goodNo, startDate, endDate, brandId, onSale, categoryId, hot,
-                isNew, freight);
+        Page<Good> page = goodMapper.list(searchKey, goodNo, startDate, endDate, brandId, onSale, categoryId, hot, isNew, freight);
         return new PageResult(page);
     }
 
@@ -164,6 +163,77 @@ public class GoodServiceImpl implements GoodService {
             return new DataRet<>("ERROR", "修改失败");
         }
         return new DataRet<>("修改成功");
+    }
+
+
+    /**
+     * 商品上下架
+     *
+     * @param onSale
+     * @param id
+     * @return
+     */
+    @Override
+    public DataRet<String> updateSaleStatus(String onSale, Long id) {
+        if (StringUtil.isEmpty(onSale) || id == null) {
+            return new DataRet<>("ERROR", "参数错误");
+        }
+        Integer result = goodMapper.updateSaleStatus(onSale, id);
+        if (result > 0) {
+            String saleResult = CommonEnum.ON_SALE.getCode().equals(onSale) ? "商品上架成功" : "商品下架成功";
+            return new DataRet<>(saleResult);
+        }
+        //TODO 商品日志写入
+        return new DataRet<>("ERROR", CommonEnum.ON_SALE.getCode().equals(onSale) ? "商品上架失败" : "商品下架失败");
+    }
+
+
+    /**
+     * 商品批量上下架
+     *
+     * @param onSale
+     * @param goodIdList
+     * @return
+     */
+    @Override
+    public DataRet<String> updateSaleList(String onSale, List<Long> goodIdList) {
+        if (StringUtil.isEmpty(onSale) || goodIdList == null || goodIdList.size() == 0) {
+            return new DataRet<>("ERROR", "参数错误");
+        }
+        Integer result = goodMapper.updateSaleList(onSale, goodIdList);
+        if (result > 0 && result == goodIdList.size()) {
+            String updateResult = CommonEnum.ON_SALE.getCode().equals(onSale) ? "商品批量上架成功" : "商品批量下架成功";
+            return new DataRet<>(updateResult);
+        }
+        if (goodIdList.size() > result) {
+            return new DataRet<>("ERROR", "部分商品上下架成功");
+        }
+        //TODO 写入商品日志
+        return new DataRet<>("ERROR", CommonEnum.ON_SALE.getCode().equals(onSale) ? "商品批量上架失败" : "商品批量下架失败");
+    }
+
+
+    /**
+     * 新建商品审核
+     *
+     * @param audit
+     * @param reason
+     * @param id
+     * @return
+     */
+    @Override
+    public DataRet<String> audit(String audit, String reason, Long id) {
+        if (id == null) {
+            return new DataRet<>("ERROR", "参数错误");
+        }
+        if (audit.equals(CommonEnum.NOT_PASS_AUTH.getCode()) && StringUtil.isEmpty(reason)) {
+            return new DataRet<>("ERROR", "请填写失败原因");
+        }
+        Integer result = goodMapper.audit(audit, reason, id);
+        if (result == 0) {
+            return new DataRet<>("ERROR","审核失败");
+        }
+        return new DataRet<>("审核成功");
     }
 
     /**

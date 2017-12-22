@@ -72,10 +72,43 @@ public interface GoodService {
 
 
     /**
+     *修改商品信息
+     *
      * @param good
      * @return
      */
     DataRet<String> update(Good good);
+
+
+    /**
+     * 商品上下架
+     *
+     * @param onSale
+     * @param id
+     * @return
+     */
+    DataRet<String> updateSaleStatus(String onSale, Long id);
+
+
+    /**
+     * 商品批量上下架
+     *
+     * @param onSale
+     * @param goodIdList
+     * @return
+     */
+    DataRet<String> updateSaleList(String onSale, List<Long> goodIdList);
+
+
+    /**
+     * 新建商品审核
+     *
+     * @param audit
+     * @param reason
+     * @param id
+     * @return
+     */
+    DataRet<String> audit(String audit, String reason, Long id);
 
     /**
      * 商品检查

@@ -169,4 +169,32 @@
         last_update_date=NOW()
         WHERE id=#{id}
     </update>
+
+    <!--商品上下架-->
+    <update id="updateSaleStatus">
+        UPDATE t_good SET
+        <if test="onSale!=null">on_sale=#{onSale},</if>
+        last_update_date=now()
+        WHERE id=#{id}
+    </update>
+
+    <!--商品批量上下架-->
+    <update id="updateSaleList">
+        UPDATE t_good SET
+        <if test="onSale!=null">on_sale=#{onSale},</if>
+        last_update_date=now()
+        WHERE id IN
+        <foreach collection="idList" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <!--商品审核-->
+    <update id="audit">
+        UPDATE t_good SET
+        <if test="audit!=null and audit!=''">audit=#{audit},</if>
+        <if test="reason!=null and reason!=''">reason=#{reason},</if>
+        last_update_date=now()
+        WHERE id=#{id}
+    </update>
 </mapper>

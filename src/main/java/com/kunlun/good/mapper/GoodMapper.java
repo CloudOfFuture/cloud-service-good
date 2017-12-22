@@ -85,4 +85,34 @@ public interface GoodMapper {
      * @return
      */
     Integer update(Good good);
+
+
+    /**
+     * 商品上下架
+     *
+     * @param onSale
+     * @param id
+     * @return
+     */
+    Integer updateSaleStatus(@Param("onSale") String onSale,@Param("id") Long id);
+
+    /**
+     * 批量上下架商品
+     *
+     * @param onSale
+     * @param goodIdList
+     * @return
+     */
+    Integer updateSaleList(@Param("onSale") String onSale,@Param("goodIdList") List<Long> goodIdList);
+
+
+    /**
+     * 新建商品审核
+     *
+     * @param audit
+     * @param reason
+     * @param id
+     * @return
+     */
+    Integer audit(@Param("audit") String audit,@Param("reason") String reason,@Param("id") Long id);
 }
