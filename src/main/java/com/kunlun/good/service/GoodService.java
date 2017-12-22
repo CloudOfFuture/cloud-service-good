@@ -98,4 +98,15 @@ public interface GoodService {
      * @return
      */
     DataRet<String> updateSaleList(String onSale, List<Long> goodIdList);
+
+
+    /**
+     * 新建商品审核
+     *
+     * @param audit
+     * @param reason
+     * @param id
+     * @return
+     */
+    DataRet<String> audit(String audit, String reason, Long id);
 }

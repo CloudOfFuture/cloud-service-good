@@ -143,10 +143,26 @@ public class GoodController {
      * @param jsonObject
      * @return
      */
-    @PostMapping("updateSaleList")
+    @PostMapping("/updateSaleList")
     public DataRet<String> updateSaleList(@RequestBody JSONObject jsonObject){
         String onSale=jsonObject.getString("onSale");
         List<Long>goodIdList=jsonObject.getJSONArray("goodIdList").toJavaList(Long.class);
         return goodService.updateSaleList(onSale,goodIdList);
+    }
+
+
+    /**
+     * 新建商品审核
+     *
+     * @param audit
+     * @param reason
+     * @param id
+     * @return
+     */
+    @PostMapping("/audit")
+    public DataRet<String> audit(@RequestParam("audit") String audit,
+                                 @RequestParam("reason") String reason,
+                                 @RequestParam("id") Long id){
+        return goodService.audit(audit,reason,id);
     }
 }

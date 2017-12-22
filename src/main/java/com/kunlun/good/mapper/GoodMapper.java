@@ -104,4 +104,15 @@ public interface GoodMapper {
      * @return
      */
     Integer updateSaleList(@Param("onSale") String onSale,@Param("goodIdList") List<Long> goodIdList);
+
+
+    /**
+     * 新建商品审核
+     *
+     * @param audit
+     * @param reason
+     * @param id
+     * @return
+     */
+    Integer audit(@Param("audit") String audit,@Param("reason") String reason,@Param("id") Long id);
 }

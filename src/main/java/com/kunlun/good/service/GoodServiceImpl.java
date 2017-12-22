@@ -211,4 +211,28 @@ public class GoodServiceImpl implements GoodService {
         //TODO 写入商品日志
         return new DataRet<>("ERROR", CommonEnum.ON_SALE.getCode().equals(onSale) ? "商品批量上架失败" : "商品批量下架失败");
     }
+
+
+    /**
+     * 新建商品审核
+     *
+     * @param audit
+     * @param reason
+     * @param id
+     * @return
+     */
+    @Override
+    public DataRet<String> audit(String audit, String reason, Long id) {
+        if (id == null) {
+            return new DataRet<>("ERROR", "参数错误");
+        }
+        if (audit.equals(CommonEnum.NOT_PASS_AUTH.getCode()) && StringUtil.isEmpty(reason)) {
+            return new DataRet<>("ERROR", "请填写失败原因");
+        }
+        Integer result = goodMapper.audit(audit, reason, id);
+        if (result == 0) {
+            return new DataRet<>("ERROR","审核失败");
+        }
+        return new DataRet<>("审核成功");
+    }
 }
