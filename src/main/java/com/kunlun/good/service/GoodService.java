@@ -69,4 +69,13 @@ public interface GoodService {
      * @return
      */
     DataRet<String> deleteByIdList(List<Long> idList);
+
+
+    /**
+     *
+     *
+     * @param good
+     * @return
+     */
+    DataRet<String> update(Good good);
 }

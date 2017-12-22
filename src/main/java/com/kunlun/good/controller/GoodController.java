@@ -108,4 +108,17 @@ public class GoodController {
         List<Long>idList=object.getJSONArray("idList").toJavaList(Long.class);
         return goodService.deleteByIdList(idList);
     }
+
+
+    /**
+     * 修改商品
+     *
+     * @param good
+     * @return
+     */
+    @PostMapping("/update")
+    public DataRet<String> update(@RequestBody Good good){
+        //TODO 图片
+        return goodService.update(good);
+    }
 }

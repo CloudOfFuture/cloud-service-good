@@ -76,4 +76,13 @@ public interface GoodMapper {
      * @return
      */
     Integer deleteByIdList(@Param("idList") List<Long> idList);
+
+
+    /**
+     * 修改商品信息
+     *
+     * @param good
+     * @return
+     */
+    Integer update(Good good);
 }

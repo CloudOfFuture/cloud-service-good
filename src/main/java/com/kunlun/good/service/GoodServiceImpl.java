@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.util.StringUtil;
 import com.kunlun.entity.Good;
+import com.kunlun.enums.CommonEnum;
 import com.kunlun.good.mapper.GoodMapper;
 import com.kunlun.result.DataRet;
 import com.kunlun.result.PageResult;
@@ -135,5 +136,32 @@ public class GoodServiceImpl implements GoodService {
         }
         //TODO 记录商品日志
         return new DataRet<>("批量删除成功");
+    }
+
+    /**
+     * 修改商品
+     *
+     * @param good
+     * @return
+     */
+    @Override
+    public DataRet<String> update(Good good) {
+        if (good.getId() == null) {
+            return new DataRet<>("ERROR", "参数错误");
+        }
+        Good newGood = goodMapper.findById(good.getId());
+        if (newGood == null) {
+            return new DataRet<>("ERROR", "未找到商品");
+        }
+        if (CommonEnum.ON_SALE.getCode().equals(newGood.getOnSale())) {
+            return new DataRet<>("ERROR", "上架商品不能修改");
+        }
+        //TODO 类目解绑
+        //TODO 图片删除更新
+        Integer result = goodMapper.update(good);
+        if (result == 0) {
+            return new DataRet<>("ERROR","修改失败");
+        }
+        return new DataRet<>("修改成功");
     }
 }

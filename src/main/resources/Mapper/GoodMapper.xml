@@ -142,4 +142,31 @@
         </foreach>
         AND on_sale='OFF_SALE'
     </update>
+
+    <!--修改商品信息-->
+    <update id="update" parameterType="com.kunlun.entity.Good">
+        UPDATE t_good SET
+        <if test="goodName!=null">good_name=#{goodName},</if>
+        <if test="description!=null">description=#{description},</if>
+        <if test="promotion!=null">promotion=#{promotion},</if>
+        <if test="price!=null">price=#{price},</if>
+        <if test="saleVolume!=null">sale_volume=#{saleVolume},</if>
+        <if test="discount!=null">discount=#{discount},</if>
+        <if test="stock!=null">stock=#{stock},</if>
+        <if test="onSale!=null">on_sale=#{onSale},</if>
+        <if test="hot!=null">hot=#{hot},</if>
+        <if test="isNew!=null">is_new=#{isNew},</if>
+        <if test="freight!=null">freight=#{freight},</if>
+        <if test="brandId!=null">brand_id=#{brandId},</if>
+        <if test="sellerId!=null">seller_id=#{sellerId},</if>
+        <if test="visitTotal!=null">visit_total=#{visitTotal},</if>
+        <if test="goodNo!=null">good_no=#{goodNo},</if>
+        <if test="mainImageUrl!=null">main_image_url=#{mainImageUrl},</if>
+        <if test="status!=null">status=#{status},</if>
+        <if test="richContent!=null">rich_content=#{richContent},</if>
+        <if test="seo!=null">seo=#{seo},</if>
+        <if test="freightFee!=null">freight_fee=#{freightFee},</if>
+        last_update_date=NOW()
+        WHERE id=#{id}
+    </update>
 </mapper>
