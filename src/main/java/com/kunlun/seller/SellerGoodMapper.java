@@ -52,13 +52,6 @@ public interface SellerGoodMapper {
      */
     Integer updateGood(Good good);
 
-    /**
-     * d
-     *
-     * @param goodRequestParams GoodRequestParams
-     * @return Page
-     */
-    Page<GoodExt> findByCondition(GoodRequestParams goodRequestParams);
 
     /**
      * 商品上下架
@@ -76,29 +69,127 @@ public interface SellerGoodMapper {
      * @param idList 商品id
      * @return Integer
      */
-    Integer batchDeleteGood(@Param("idList") List<Long> idList);
+    Integer deleteByIdList(@Param("idList") List<Long> idList);
+
+
+    /**
+     * 条件查询
+     *
+     * @param userId     Long
+     * @param type       String
+     * @param searchKey  String
+     * @param goodNo     String
+     * @param startDate  String
+     * @param endDate    String
+     * @param brandId    String
+     * @param saleStatus String
+     * @param categoryId Long
+     * @param hot        String
+     * @param isNew      String
+     * @param freight    String
+     * @return List
+     */
+    Page<GoodExt> findByCondition(@Param("userId") Long userId,
+                                  @Param("type") String type,
+                                  @Param("searchKey") String searchKey,
+                                  @Param("goodNo") String goodNo,
+                                  @Param("startDate") String startDate,
+                                  @Param("endDate") String endDate,
+                                  @Param("brandId") Long brandId,
+                                  @Param("saleStatus") String saleStatus,
+                                  @Param("categoryId") Long categoryId,
+                                  @Param("hot") String hot,
+                                  @Param("isNew") String isNew,
+                                  @Param("freight") String freight);
+
 
     /**
      * 未绑定活动的商品列表
      *
-     * @param requestParams GoodRequestParams
+     * @param userId     Long
+     * @param type       String
+     * @param searchKey  String
+     * @param goodNo     String
+     * @param startDate  String
+     * @param endDate    String
+     * @param brandId    String
+     * @param onSale     String
+     * @param categoryId Long
+     * @param hot        String
+     * @param isNew      String
+     * @param freight    String
      * @return Page
      */
-    Page<GoodExt> findForActivity(GoodRequestParams requestParams);
+    Page<GoodExt> findForActivity(@Param("user_id") Long userId,
+                                  @Param("type") String type,
+                                  @Param("searchKey") String searchKey,
+                                  @Param("good_no") String goodNo,
+                                  @Param("start_date") String startDate,
+                                  @Param("end_date") String endDate,
+                                  @Param("brand_id") Long brandId,
+                                  @Param("on_sale") String onSale,
+                                  @Param("category_id") Long categoryId,
+                                  @Param("hot") String hot,
+                                  @Param("is_new") String isNew,
+                                  @Param("freight") String freight);
 
     /**
      * 根据活动id作为主要条件查询列表
      *
-     * @param requestParams GoodRequestParams
+     * @param userId     Long
+     * @param type       String
+     * @param searchKey  String
+     * @param goodNo     String
+     * @param startDate  String
+     * @param endDate    String
+     * @param brandId    String
+     * @param onSale     String
+     * @param categoryId Long
+     * @param hot        String
+     * @param isNew      String
+     * @param freight    String
      * @return Page
      */
-    Page<GoodExt> findByActivityId(GoodRequestParams requestParams);
+    Page<GoodExt> findByActivityId(@Param("user_id") Long userId,
+                                   @Param("type") String type,
+                                   @Param("searchKey") String searchKey,
+                                   @Param("good_no") String goodNo,
+                                   @Param("start_date") String startDate,
+                                   @Param("end_date") String endDate,
+                                   @Param("brand_id") Long brandId,
+                                   @Param("on_sale") String onSale,
+                                   @Param("category_id") Long categoryId,
+                                   @Param("hot") String hot,
+                                   @Param("is_new") String isNew,
+                                   @Param("freight") String freight);
 
     /**
      * 未绑定类目的商品列表s
      *
-     * @param requestParams GoodRequestParams
+     * @param userId     Long
+     * @param type       String
+     * @param searchKey  String
+     * @param goodNo     String
+     * @param startDate  String
+     * @param endDate    String
+     * @param brandId    String
+     * @param onSale     String
+     * @param categoryId Long
+     * @param hot        String
+     * @param isNew      String
+     * @param freight    String
      * @return Page
      */
-    Page<GoodExt> findForCategory(GoodRequestParams requestParams);
+    Page<GoodExt> findForCategory(@Param("user_id") Long userId,
+                                  @Param("type") String type,
+                                  @Param("searchKey") String searchKey,
+                                  @Param("good_no") String goodNo,
+                                  @Param("start_date") String startDate,
+                                  @Param("end_date") String endDate,
+                                  @Param("brand_id") Long brandId,
+                                  @Param("on_sale") String onSale,
+                                  @Param("category_id") Long categoryId,
+                                  @Param("hot") String hot,
+                                  @Param("is_new") String isNew,
+                                  @Param("freight") String freight);
 }

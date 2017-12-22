@@ -6,6 +6,7 @@ import com.kunlun.entity.GoodRequestParams;
 import com.kunlun.result.DataRet;
 import com.kunlun.result.PageResult;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -43,10 +44,34 @@ public interface SellerGoodService {
     /**
      * 条件查询商品列表
      *
-     * @param goodRequestParams
+     * @param pageNo
+     * @param pageSize
+     * @param searchKey
+     * @param goodNo
+     * @param startDate
+     * @param endDate
+     * @param brandId
+     * @param onSale
+     * @param categoryId
+     * @param hot
+     * @param isNew
+     * @param freight
      * @return
      */
-    PageResult findByCondition(GoodRequestParams goodRequestParams);
+    PageResult findByCondition(Integer pageNo,
+                               Integer pageSize,
+                               Long userId,
+                               String type,
+                               String searchKey,
+                               String goodNo,
+                               String startDate,
+                               String endDate,
+                               Long brandId,
+                               String onSale,
+                               Long categoryId,
+                               String hot,
+                               String isNew,
+                               String freight);
 
     /**
      * 批量删除商品
@@ -54,7 +79,7 @@ public interface SellerGoodService {
      * @param idList 商品id集合
      * @return
      */
-    DataRet batchDeleteGood(List<Long> idList);
+    DataRet deleteByIdList(List<Long> idList);
 
     /**
      * 商品库存减扣

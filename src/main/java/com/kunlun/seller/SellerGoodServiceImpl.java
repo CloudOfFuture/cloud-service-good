@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -120,7 +121,7 @@ public class SellerGoodServiceImpl implements SellerGoodService {
         }
 
         sellerGoodMapper.updateGood(goodExt);
-        List<MallImage> imgList = goodExt.getImgList();
+//        List<MallImage> imgList = goodExt.getImgList();
 //        if (imgList != null && imgList.size() > 0) {
 //            //清空原来的图片
 //            imgList.forEach(item -> fileOperationMapper.deleteById(item.getId()));
@@ -144,11 +145,11 @@ public class SellerGoodServiceImpl implements SellerGoodService {
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public DataRet batchDeleteGood(List<Long> idList) {
+    public DataRet deleteByIdList(List<Long> idList) {
         if (idList == null || idList.size() == 0) {
             return new DataRet<>("ERROR", "参数错误");
         }
-        int result = sellerGoodMapper.batchDeleteGood(idList);
+        int result = sellerGoodMapper.deleteByIdList(idList);
         if (result == 0) {
             return new DataRet<>("ERROR", "删除失败");
         }
@@ -194,43 +195,68 @@ public class SellerGoodServiceImpl implements SellerGoodService {
         return new DataRet<>(action + "成功");
     }
 
-
     /**
      * 条件查询列表（未绑定活动，未绑定类目，已经绑定活动，模糊查询）
      *
-     * @param params GoodRequestParams
-     * @return PageResult
+     * @param pageNo
+     * @param pageSize
+     * @param userId
+     * @param searchKey
+     * @param goodNo
+     * @param startDate
+     * @param endDate
+     * @param brandId
+     * @param saleStatus
+     * @param categoryId
+     * @param hot
+     * @param isNew
+     * @param freight
+     * @return
      */
     @Override
-    public PageResult findByCondition(GoodRequestParams params) {
-        if (params.getSellerId() == null) {
+    public PageResult findByCondition(Integer pageNo,
+                                      Integer pageSize,
+                                      Long userId,
+                                      String type,
+                                      String searchKey,
+                                      String goodNo,
+                                      String startDate,
+                                      String endDate,
+                                      Long brandId,
+                                      String saleStatus,
+                                      Long categoryId,
+                                      String hot,
+                                      String isNew,
+                                      String freight) {
+        if (userId == null) {
             return new PageResult();
         }
-        PageHelper.startPage(params.getPageNo(), params.getPageSize());
-        if (StringUtils.isEmpty(params.getSearchKey())) {
-            params.setSearchKey(null);
+        PageHelper.startPage(pageNo, pageSize);
+        if (!StringUtils.isEmpty(searchKey)) {
+            searchKey = "%" + searchKey + "%";
         }
-        if (!StringUtils.isEmpty(params.getSearchKey())) {
-            params.setSearchKey("%" + params.getSearchKey() + "%");
-        }
-        params.setEndDate(CommonUtil.formatDate(params.getEndDate()));
-        params.setStartDate(CommonUtil.formatDate(params.getStartDate()));
+        startDate = CommonUtil.formatDate(startDate);
+        endDate = CommonUtil.formatDate(endDate);
         Page<GoodExt> page;
-        boolean getUnbindCategory = CommonEnum.UNBIND_CATEGORY.getCode().equals(params.getType());
-        boolean getBindActivity = CommonEnum.BIND_ACTIVITY.getCode().equals(params.getType());
-        boolean getUnbindActivity = CommonEnum.UNBIND_ACTIVITY.getCode().equals(params.getType());
+        boolean getUnbindCategory = CommonEnum.UNBIND_CATEGORY.getCode().equals(type);
+        boolean getBindActivity = CommonEnum.BIND_ACTIVITY.getCode().equals(type);
+        boolean getUnbindActivity = CommonEnum.UNBIND_ACTIVITY.getCode().equals(type);
         if (getUnbindCategory) {
             //未绑定类目的商品列表
-            page = sellerGoodMapper.findForCategory(params);
+            page = sellerGoodMapper.findForCategory(userId, type, searchKey, goodNo, startDate,
+                    endDate, brandId, saleStatus, categoryId, hot, isNew, freight);
         } else if (getBindActivity) {
             //已经绑定活动的商品列表搜索
-            page = sellerGoodMapper.findByActivityId(params);
+            page = sellerGoodMapper.findByActivityId(userId, type, searchKey, goodNo, startDate,
+                    endDate, brandId, saleStatus, categoryId, hot, isNew, freight);
         } else if (getUnbindActivity) {
             //未绑定活动的商品列表
-            page = sellerGoodMapper.findForActivity(params);
+            page = sellerGoodMapper.findForActivity(userId, type, searchKey, goodNo, startDate,
+                    endDate, brandId, saleStatus, categoryId, hot, isNew, freight);
         } else {
             //基础条件查询
-            page = sellerGoodMapper.findByCondition(params);
+            page = sellerGoodMapper.findByCondition(userId, type, searchKey, goodNo, startDate,
+                    endDate, brandId, saleStatus, categoryId, hot, isNew, freight);
         }
         return new PageResult<>(page);
     }
