@@ -88,4 +88,14 @@ public interface GoodService {
      * @return
      */
     DataRet<String> updateSaleStatus(String onSale, Long id);
+
+
+    /**
+     * 商品批量上下架
+     *
+     * @param onSale
+     * @param goodIdList
+     * @return
+     */
+    DataRet<String> updateSaleList(String onSale, List<Long> goodIdList);
 }

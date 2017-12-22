@@ -135,4 +135,18 @@ public class GoodController {
                                             @RequestParam("id") Long id){
         return goodService.updateSaleStatus(onSale,id);
     }
+
+
+    /**
+     * 商品批量上下
+     *
+     * @param jsonObject
+     * @return
+     */
+    @PostMapping("updateSaleList")
+    public DataRet<String> updateSaleList(@RequestBody JSONObject jsonObject){
+        String onSale=jsonObject.getString("onSale");
+        List<Long>goodIdList=jsonObject.getJSONArray("goodIdList").toJavaList(Long.class);
+        return goodService.updateSaleList(onSale,goodIdList);
+    }
 }
