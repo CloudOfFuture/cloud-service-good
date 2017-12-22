@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kunlun.good.mapper.GoodMapper">
+
+    <!--商品新增-->
+    <insert id="add" parameterType="com.kunlun.entity.Good">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO t_good(
+        good_name,
+        description,
+        promotion,
+        price,
+        sale_volume,
+        discount,
+        stock,
+        on_sale,
+        hot,
+        is_new,
+        create_date,
+        last_update_date,
+        freight,
+        brand_id,
+        seller_id,
+        visit_total,
+        good_no,
+        main_image_url,
+        status,
+        rich_content,
+        seo,
+        freight_fee)
+        VALUES (
+        #{goodName},
+        #{description},
+        #{promotion},
+        #{price},
+        #{saleVolume},
+        #{discount},
+        #{stock},
+        #{onSale},
+        #{hot},
+        #{isNew},
+        NOW(),
+        NOW(),
+        #{freight},
+        #{brandId},
+        #{sellerId},
+        #{visitTotal},
+        #{goodNo},
+        #{mainImageUrl},
+        'NORMAL',
+        #{richContent},
+        #{seo},
+        #{freightFee})
+    </insert>
+
+
+    <!--获取商品详情-->
+    <select id="findById" resultType="com.kunlun.entity.Good">
+        SELECT
+        id,
+        good_name,
+        description,
+        promotion,
+        price,
+        sale_volume,
+        discount,
+        stock,
+        on_sale,
+        hot,
+        seo,
+        is_new,
+        freight,
+        brand_id,
+        seller_id,
+        visit_total,
+        good_no,
+        audit,
+        status,
+        rich_content,
+        main_image_url,
+        freight_fee
+        FROM t_good WHERE id=#{id}
+    </select>
+
+    <!--分页查询-->
+    <select id="list" resultType="com.kunlun.entity.Good">
+        SELECT
+        id,
+        good_name,
+        description,
+        promotion,
+        price,
+        sale_volume,
+        discount,
+        stock,
+        on_sale,
+        hot,
+        seo,
+        is_new,
+        freight,
+        brand_id,
+        seller_id,
+        visit_total,
+        good_no,
+        audit,
+        status,
+        rich_content,
+        main_image_url,
+        freight_fee
+        FROM t_good WHERE 1=1
+        <if test="searchKey!=null">AND CONCAT_WS('',good_name,good_no) LIKE #{searchKey}</if>
+        <if test="goodNo!=null">AND good_no=#{goodNo}</if>
+        <if test="onSale!=null">AND on_sale=#{onSale}</if>
+        <if test="hot!=null">AND hot=#{hot}</if>
+        <if test="isNew!=null">AND is_new=#{isNew}</if>
+        <if test="freight!=null">AND freight=#{freight}</if>
+        <if test="brandId!=null">AND brand_id=#{brandId}</if>
+        <if test="categoryId!=null">AND category_id=#{category_id}</if>
+    </select>
+
+    <!--根据id删除商品-->
+    <update id="deleteById">
+        UPDATE t_good
+        SET status='UN_NORMAL',
+        last_update_date=now()
+        WHERE id=#{id}
+        AND on_sale='OFF_SALE'
+    </update>
+
+    <!--批量删除商品-->
+    <update id="deleteByIdList">
+        UPDATE t_good
+        SET status='UN_NORMAL',
+        last_update_date=now()
+        WHERE id IN
+        <foreach collection="idList" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND on_sale='OFF_SALE'
+    </update>
+
+    <!--修改商品信息-->
+    <update id="update" parameterType="com.kunlun.entity.Good">
+        UPDATE t_good SET
+        <if test="goodName!=null">good_name=#{goodName},</if>
+        <if test="description!=null">description=#{description},</if>
+        <if test="promotion!=null">promotion=#{promotion},</if>
+        <if test="price!=null">price=#{price},</if>
+        <if test="saleVolume!=null">sale_volume=#{saleVolume},</if>
+        <if test="discount!=null">discount=#{discount},</if>
+        <if test="stock!=null">stock=#{stock},</if>
+        <if test="onSale!=null">on_sale=#{onSale},</if>
+        <if test="hot!=null">hot=#{hot},</if>
+        <if test="isNew!=null">is_new=#{isNew},</if>
+        <if test="freight!=null">freight=#{freight},</if>
+        <if test="brandId!=null">brand_id=#{brandId},</if>
+        <if test="sellerId!=null">seller_id=#{sellerId},</if>
+        <if test="visitTotal!=null">visit_total=#{visitTotal},</if>
+        <if test="goodNo!=null">good_no=#{goodNo},</if>
+        <if test="mainImageUrl!=null">main_image_url=#{mainImageUrl},</if>
+        <if test="status!=null">status=#{status},</if>
+        <if test="richContent!=null">rich_content=#{richContent},</if>
+        <if test="seo!=null">seo=#{seo},</if>
+        <if test="freightFee!=null">freight_fee=#{freightFee},</if>
+        last_update_date=NOW()
+        WHERE id=#{id}
+    </update>
+
+    <!--商品上下架-->
+    <update id="updateSaleStatus">
+        UPDATE t_good SET
+        <if test="onSale!=null">on_sale=#{onSale},</if>
+        last_update_date=now()
+        WHERE id=#{id}
+    </update>
+
+    <!--商品批量上下架-->
+    <update id="updateSaleList">
+        UPDATE t_good SET
+        <if test="onSale!=null">on_sale=#{onSale},</if>
+        last_update_date=now()
+        WHERE id IN
+        <foreach collection="idList" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <!--商品审核-->
+    <update id="audit">
+        UPDATE t_good SET
+        <if test="audit!=null and audit!=''">audit=#{audit},</if>
+        <if test="reason!=null and reason!=''">reason=#{reason},</if>
+        last_update_date=now()
+        WHERE id=#{id}
+    </update>
+
+    <!--库存修改-->
+    <update id="updateStock">
+        UPDATE t_good SET stock=stock+#{count} WHERE id=#{id}
+    </update>
+</mapper>
