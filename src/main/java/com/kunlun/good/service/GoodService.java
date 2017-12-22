@@ -72,10 +72,18 @@ public interface GoodService {
 
 
     /**
-     *
-     *
      * @param good
      * @return
      */
     DataRet<String> update(Good good);
+
+    /**
+     * 商品检查
+     *
+     * @param goodId
+     * @param count
+     * @param orderFee
+     * @return
+     */
+    String checkGood(Long goodId, Integer count, Integer orderFee);
 }

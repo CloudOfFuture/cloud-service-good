@@ -95,7 +95,8 @@ public class GoodServiceImpl implements GoodService {
         if (!StringUtil.isEmpty(searchKey)) {
             searchKey = ("%" + searchKey + "%");
         }
-        Page<Good> page = goodMapper.list(searchKey, goodNo, startDate, endDate, brandId, onSale, categoryId, hot, isNew, freight);
+        Page<Good> page = goodMapper.list(searchKey, goodNo, startDate, endDate, brandId, onSale, categoryId, hot,
+                isNew, freight);
         return new PageResult(page);
     }
 
@@ -160,8 +161,34 @@ public class GoodServiceImpl implements GoodService {
         //TODO 图片删除更新
         Integer result = goodMapper.update(good);
         if (result == 0) {
-            return new DataRet<>("ERROR","修改失败");
+            return new DataRet<>("ERROR", "修改失败");
         }
         return new DataRet<>("修改成功");
+    }
+
+    /**
+     * 商品检查
+     *
+     * @param goodId
+     * @param count
+     * @param orderFee
+     * @return
+     */
+    @Override
+    public String checkGood(Long goodId, Integer count, Integer orderFee) {
+        Good good = goodMapper.findById(goodId);
+        if (null == good || good.getStock() <= 0) {
+            return "商品库存不足";
+        }
+        if (CommonEnum.OFF_SALE.getCode().equals(good.getOnSale())) {
+            return "商品已下架";
+        }
+        if (orderFee != 0 && count != 0) {
+            int unitFee = orderFee / count;
+            if (good.getPrice() != unitFee) {
+                return "商品信息已过期，请重新下单";
+            }
+        }
+        return null;
     }
 }

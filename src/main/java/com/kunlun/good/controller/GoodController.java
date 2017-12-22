@@ -71,16 +71,16 @@ public class GoodController {
     @GetMapping("/findByCondition")
     public PageResult findByCondition(@RequestParam(value = "page_no") Integer pageNo,
                                       @RequestParam(value = "page_size") Integer pageSize,
-                                      @RequestParam(value = "search_key",required = false) String searchKey,
-                                      @RequestParam(value = "good_no",required = false) String goodNo,
-                                      @RequestParam(value = "start_date",required = false) Date startDate,
-                                      @RequestParam(value = "end_date",required = false) Date endDate,
-                                      @RequestParam(value = "brand_id",required = false) Long brandId,
-                                      @RequestParam(value = "on_sale",required = false) String onSale,
-                                      @RequestParam(value = "category_id",required = false) Long categoryId,
-                                      @RequestParam(value = "hot",required = false) String hot,
-                                      @RequestParam(value = "is_new",required = false) String isNew,
-                                      @RequestParam(value = "freight",required = false) String freight) {
+                                      @RequestParam(value = "search_key", required = false) String searchKey,
+                                      @RequestParam(value = "good_no", required = false) String goodNo,
+                                      @RequestParam(value = "start_date", required = false) Date startDate,
+                                      @RequestParam(value = "end_date", required = false) Date endDate,
+                                      @RequestParam(value = "brand_id", required = false) Long brandId,
+                                      @RequestParam(value = "on_sale", required = false) String onSale,
+                                      @RequestParam(value = "category_id", required = false) Long categoryId,
+                                      @RequestParam(value = "hot", required = false) String hot,
+                                      @RequestParam(value = "is_new", required = false) String isNew,
+                                      @RequestParam(value = "freight", required = false) String freight) {
         return goodService.findByCondition(pageNo, pageSize, searchKey, goodNo, startDate, endDate,
                 brandId, onSale, categoryId, hot, isNew, freight);
     }
@@ -92,7 +92,7 @@ public class GoodController {
      * @return
      */
     @PostMapping("/deleteById")
-    public DataRet<String> deleteById(@RequestParam(value = "id") Long id){
+    public DataRet<String> deleteById(@RequestParam(value = "id") Long id) {
         return goodService.deleteById(id);
     }
 
@@ -104,8 +104,8 @@ public class GoodController {
      * @return
      */
     @PostMapping("/deleteByIdList")
-    public DataRet<String> deleteByIdList(@RequestBody JSONObject object){
-        List<Long>idList=object.getJSONArray("idList").toJavaList(Long.class);
+    public DataRet<String> deleteByIdList(@RequestBody JSONObject object) {
+        List<Long> idList = object.getJSONArray("idList").toJavaList(Long.class);
         return goodService.deleteByIdList(idList);
     }
 
@@ -117,8 +117,21 @@ public class GoodController {
      * @return
      */
     @PostMapping("/update")
-    public DataRet<String> update(@RequestBody Good good){
+    public DataRet<String> update(@RequestBody Good good) {
         //TODO 图片
         return goodService.update(good);
     }
+
+    /**
+     * 商品检查
+     * @param goodId
+     * @return
+     */
+    @GetMapping("checkGood")
+    public String checkGood(@RequestParam(value = "goodId") Long goodId,
+                                     @RequestParam(value = "count")Integer count,
+                                     @RequestParam(value = "orderFee")Integer orderFee) {
+        return null;
+    }
+
 }
