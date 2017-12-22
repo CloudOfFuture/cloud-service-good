@@ -115,4 +115,14 @@ public interface GoodMapper {
      * @return
      */
     Integer audit(@Param("audit") String audit,@Param("reason") String reason,@Param("id") Long id);
+
+
+    /**
+     * 更新库存
+     *
+     * @param id
+     * @param count
+     * @return
+     */
+    Integer updateStock(@Param("id") Long id,@Param("count") Integer count);
 }

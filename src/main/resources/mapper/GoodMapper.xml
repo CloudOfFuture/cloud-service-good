@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kunlun.good.mapper.GoodMapper">
 
@@ -196,5 +196,10 @@
         <if test="reason!=null and reason!=''">reason=#{reason},</if>
         last_update_date=now()
         WHERE id=#{id}
+    </update>
+
+    <!--库存修改-->
+    <update id="updateStock">
+        UPDATE t_good SET stock=stock+#{count} WHERE id=#{id}
     </update>
 </mapper>
