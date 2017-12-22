@@ -1,14 +1,14 @@
-package com.kunlun.seller;
+package com.kunlun.good.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.kunlun.entity.GoodExt;
 import com.kunlun.entity.MallImage;
 import com.kunlun.result.DataRet;
 import com.kunlun.result.PageResult;
+import com.kunlun.good.service.SellerGoodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 /**

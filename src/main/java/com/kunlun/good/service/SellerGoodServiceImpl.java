@@ -1,13 +1,12 @@
-package com.kunlun.seller;
+package com.kunlun.good.service;
 
 import com.alibaba.druid.util.StringUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.kunlun.category.CategoryGoodMapper;
 import com.kunlun.entity.GoodExt;
-import com.kunlun.entity.GoodRequestParams;
-import com.kunlun.entity.MallImage;
 import com.kunlun.enums.CommonEnum;
+import com.kunlun.good.mapper.SellerGoodMapper;
 import com.kunlun.result.DataRet;
 import com.kunlun.result.PageResult;
 import com.kunlun.utils.CommonUtil;
@@ -15,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 
 /**
