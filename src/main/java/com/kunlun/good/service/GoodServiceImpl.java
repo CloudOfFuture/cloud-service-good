@@ -160,8 +160,30 @@ public class GoodServiceImpl implements GoodService {
         //TODO 图片删除更新
         Integer result = goodMapper.update(good);
         if (result == 0) {
-            return new DataRet<>("ERROR","修改失败");
+            return new DataRet<>("ERROR", "修改失败");
         }
         return new DataRet<>("修改成功");
+    }
+
+
+    /**
+     * 商品上下架
+     *
+     * @param onSale
+     * @param id
+     * @return
+     */
+    @Override
+    public DataRet<String> updateSaleStatus(String onSale, Long id) {
+        if (StringUtil.isEmpty(onSale) || id == null) {
+            return new DataRet<>("ERROR", "参数错误");
+        }
+        Integer result = goodMapper.updateSaleStatus(onSale, id);
+        if (result > 0) {
+            String saleResult = CommonEnum.ON_SALE.getCode().equals(onSale) ? "商品上架成功" : "商品下架成功";
+            return new DataRet<>(saleResult);
+        }
+        //TODO 商品日志写入
+        return new DataRet<>("ERROR", CommonEnum.ON_SALE.getCode().equals(onSale) ? "商品上架失败" : "商品下架失败");
     }
 }

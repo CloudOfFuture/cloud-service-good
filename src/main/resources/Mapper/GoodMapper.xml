@@ -169,4 +169,12 @@
         last_update_date=NOW()
         WHERE id=#{id}
     </update>
+
+    <!--商品上下架-->
+    <update id="updateSaleStatus">
+        UPDATE t_good SET
+        <if test="onSale!=null">on_sale=#{onSale},</if>
+        last_update_date=now()
+        WHERE id=#{id}
+    </update>
 </mapper>

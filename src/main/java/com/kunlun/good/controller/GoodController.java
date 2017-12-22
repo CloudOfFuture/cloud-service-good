@@ -121,4 +121,18 @@ public class GoodController {
         //TODO 图片
         return goodService.update(good);
     }
+
+
+    /**
+     * 商品上下架
+     *
+     * @param onSale
+     * @param id
+     * @return
+     */
+    @GetMapping("/updateSaleStatus")
+    public DataRet<String> updateSaleStatus(@RequestParam("on_sale") String onSale,
+                                            @RequestParam("id") Long id){
+        return goodService.updateSaleStatus(onSale,id);
+    }
 }

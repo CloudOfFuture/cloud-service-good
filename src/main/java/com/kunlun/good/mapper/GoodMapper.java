@@ -85,4 +85,14 @@ public interface GoodMapper {
      * @return
      */
     Integer update(Good good);
+
+
+    /**
+     * 商品上下架
+     *
+     * @param onSale
+     * @param id
+     * @return
+     */
+    Integer updateSaleStatus(@Param("onSale") String onSale,@Param("id") Long id);
 }
