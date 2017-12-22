@@ -10,6 +10,7 @@ import com.kunlun.result.DataRet;
 import com.kunlun.result.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Date;
 import java.util.List;
@@ -24,6 +25,9 @@ public class GoodServiceImpl implements GoodService {
 
     @Autowired
     private GoodMapper goodMapper;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
 
     /**
@@ -112,6 +116,8 @@ public class GoodServiceImpl implements GoodService {
         if (result <= 0) {
             return new DataRet<>("ERROR", "删除失败");
         }
+        Good good=goodMapper.findById(id);
+//        restTemplate.getForObject("");
         return new DataRet<>("删除成功");
     }
 
