@@ -179,4 +179,17 @@ public class GoodController {
                                   @RequestParam(value = "count") Integer count){
         return goodService.updateStock(id,count);
     }
+
+    /**
+     * 商品检查
+     * @param goodId
+     * @return
+     */
+    @GetMapping("checkGood")
+    public String checkGood(@RequestParam(value = "goodId") Long goodId,
+                                     @RequestParam(value = "count")Integer count,
+                                     @RequestParam(value = "orderFee")Integer orderFee) {
+        return null;
+    }
+
 }

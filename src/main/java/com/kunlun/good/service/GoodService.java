@@ -119,4 +119,14 @@ public interface GoodService {
      * @return
      */
     DataRet<String> updateStock(Long id, Integer count);
+
+    /**
+     * 商品检查
+     *
+     * @param goodId
+     * @param count
+     * @param orderFee
+     * @return
+     */
+    String checkGood(Long goodId, Integer count, Integer orderFee);
 }

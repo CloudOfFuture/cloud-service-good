@@ -253,4 +253,30 @@ public class GoodServiceImpl implements GoodService {
         //TODO 写入商品日志
         return new DataRet<>("库存修改成功");
     }
+
+    /**
+     * 商品检查
+     *
+     * @param goodId
+     * @param count
+     * @param orderFee
+     * @return
+     */
+    @Override
+    public String checkGood(Long goodId, Integer count, Integer orderFee) {
+        Good good = goodMapper.findById(goodId);
+        if (null == good || good.getStock() <= 0) {
+            return "商品库存不足";
+        }
+        if (CommonEnum.OFF_SALE.getCode().equals(good.getOnSale())) {
+            return "商品已下架";
+        }
+        if (orderFee != 0 && count != 0) {
+            int unitFee = orderFee / count;
+            if (good.getPrice() != unitFee) {
+                return "商品信息已过期，请重新下单";
+            }
+        }
+        return null;
+    }
 }
