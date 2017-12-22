@@ -131,8 +131,8 @@ public class GoodController {
      * @return
      */
     @GetMapping("/updateSaleStatus")
-    public DataRet<String> updateSaleStatus(@RequestParam("on_sale") String onSale,
-                                            @RequestParam("id") Long id){
+    public DataRet<String> updateSaleStatus(@RequestParam(value = "on_sale") String onSale,
+                                            @RequestParam(value = "id") Long id){
         return goodService.updateSaleStatus(onSale,id);
     }
 
@@ -160,9 +160,9 @@ public class GoodController {
      * @return
      */
     @PostMapping("/audit")
-    public DataRet<String> audit(@RequestParam("audit") String audit,
-                                 @RequestParam("reason") String reason,
-                                 @RequestParam("id") Long id){
+    public DataRet<String> audit(@RequestParam(value = "audit") String audit,
+                                 @RequestParam(value = "reason") String reason,
+                                 @RequestParam(value = "id") Long id){
         return goodService.audit(audit,reason,id);
     }
 
@@ -175,8 +175,8 @@ public class GoodController {
      * @return
      */
     @PostMapping("/updateStock")
-    public DataRet<String> update(@RequestParam("id") Long id,
-                                  @RequestParam("count") Integer count){
+    public DataRet<String> update(@RequestParam(value = "id") Long id,
+                                  @RequestParam(value = "count") Integer count){
         return goodService.updateStock(id,count);
     }
 }
