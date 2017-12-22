@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author by hmy
@@ -66,4 +67,13 @@ public interface GoodMapper {
      * @return
      */
     Integer deleteById(@Param("id") Long id);
+
+
+    /**
+     * 批量删除
+     *
+     * @param idList
+     * @return
+     */
+    Integer deleteByIdList(@Param("idList") List<Long> idList);
 }

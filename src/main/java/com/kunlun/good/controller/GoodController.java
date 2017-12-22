@@ -1,5 +1,6 @@
 package com.kunlun.good.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.kunlun.entity.Good;
 import com.kunlun.good.service.GoodService;
 import com.kunlun.result.DataRet;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -83,9 +85,27 @@ public class GoodController {
                 brandId, onSale, categoryId, hot, isNew, freight);
     }
 
-
+    /**
+     * 根据id删除
+     *
+     * @param id
+     * @return
+     */
     @PostMapping("/deleteById")
     public DataRet<String> deleteById(@RequestParam(value = "id") Long id){
         return goodService.deleteById(id);
+    }
+
+
+    /**
+     * 批量删除
+     *
+     * @param object
+     * @return
+     */
+    @PostMapping("/deleteByIdList")
+    public DataRet<String> deleteByIdList(@RequestBody JSONObject object){
+        List<Long>idList=object.getJSONArray("idList").toJavaList(Long.class);
+        return goodService.deleteByIdList(idList);
     }
 }

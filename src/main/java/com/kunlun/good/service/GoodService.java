@@ -5,6 +5,7 @@ import com.kunlun.result.DataRet;
 import com.kunlun.result.PageResult;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author by hmy
@@ -59,4 +60,13 @@ public interface GoodService {
      * @return
      */
     DataRet<String> deleteById(Long id);
+
+
+    /**
+     * 批量删除
+     *
+     * @param idList
+     * @return
+     */
+    DataRet<String> deleteByIdList(List<Long> idList);
 }

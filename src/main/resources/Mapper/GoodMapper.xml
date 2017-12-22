@@ -122,10 +122,24 @@
         <if test="categoryId!=null">AND category_id=#{category_id}</if>
     </select>
 
+    <!--根据id删除商品-->
     <update id="deleteById">
         UPDATE t_good
         SET status='UN_NORMAL',
         last_update_date=now()
+        WHERE id=#{id}
+        AND on_sale='OFF_SALE'
+    </update>
+
+    <!--批量删除商品-->
+    <update id="deleteByIdList">
+        UPDATE t_good
+        SET status='UN_NORMAL',
+        last_update_date=now()
+        WHERE id IN
+        <foreach collection="idList" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
         AND on_sale='OFF_SALE'
     </update>
 </mapper>
