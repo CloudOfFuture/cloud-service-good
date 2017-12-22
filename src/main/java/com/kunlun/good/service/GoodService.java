@@ -109,4 +109,14 @@ public interface GoodService {
      * @return
      */
     DataRet<String> audit(String audit, String reason, Long id);
+
+
+    /**
+     * 修改商品库存
+     *
+     * @param id
+     * @param count
+     * @return
+     */
+    DataRet<String> updateStock(Long id, Integer count);
 }

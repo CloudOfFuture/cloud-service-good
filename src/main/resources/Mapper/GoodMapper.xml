@@ -197,4 +197,9 @@
         last_update_date=now()
         WHERE id=#{id}
     </update>
+
+    <!--库存修改-->
+    <update id="updateStock">
+        UPDATE t_good SET stock=stock+#{count} WHERE id=#{id}
+    </update>
 </mapper>

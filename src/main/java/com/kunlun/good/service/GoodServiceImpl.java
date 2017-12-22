@@ -235,4 +235,22 @@ public class GoodServiceImpl implements GoodService {
         }
         return new DataRet<>("审核成功");
     }
+
+
+    /**
+     * 商品库存
+     *
+     * @param id
+     * @param count
+     * @return
+     */
+    @Override
+    public DataRet<String> updateStock(Long id, Integer count) {
+        Integer result=goodMapper.updateStock(id,count);
+        if (result==0){
+            return new DataRet<>("ERROR","库存修改失败");
+        }
+        //TODO 写入商品日志
+        return new DataRet<>("库存修改成功");
+    }
 }

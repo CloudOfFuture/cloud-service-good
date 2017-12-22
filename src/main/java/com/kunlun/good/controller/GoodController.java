@@ -165,4 +165,18 @@ public class GoodController {
                                  @RequestParam("id") Long id){
         return goodService.audit(audit,reason,id);
     }
+
+
+    /**
+     * 修改商品库存
+     *
+     * @param id
+     * @param count
+     * @return
+     */
+    @PostMapping("/updateStock")
+    public DataRet<String> update(@RequestParam("id") Long id,
+                                  @RequestParam("count") Integer count){
+        return goodService.updateStock(id,count);
+    }
 }
