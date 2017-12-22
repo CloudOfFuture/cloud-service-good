@@ -116,8 +116,6 @@ public class GoodServiceImpl implements GoodService {
         if (result <= 0) {
             return new DataRet<>("ERROR", "删除失败");
         }
-        Good good=goodMapper.findById(id);
-//        restTemplate.getForObject("");
         return new DataRet<>("删除成功");
     }
 
