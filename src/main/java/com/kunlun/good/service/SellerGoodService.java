@@ -1,4 +1,4 @@
-package com.kunlun.seller;
+package com.kunlun.good.service;
 
 
 import com.kunlun.entity.GoodExt;
