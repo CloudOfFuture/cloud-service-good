@@ -12,18 +12,6 @@ import com.kunlun.result.PageResult;
 public interface WxGoodService {
 
     /**
-     * 商品列表
-     *
-     * @param pageNo     Integer
-     * @param pageSize   Integer
-     * @param categoryId Long
-     * @return List
-     */
-    PageResult findHomeList(Integer pageNo,
-                            Integer pageSize,
-                            Long categoryId);
-
-    /**
      * 商品详情
      *
      * @param goodId Long
@@ -63,5 +51,5 @@ public interface WxGoodService {
      * @param orderId Long
      * @return DataRet
      */
-    DataRet findByGoodSnapshot(Long orderId);
+    DataRet findGoodSnapshot(Long orderId);
 }

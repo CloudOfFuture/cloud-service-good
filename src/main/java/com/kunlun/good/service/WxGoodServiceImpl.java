@@ -25,23 +25,6 @@ public class WxGoodServiceImpl implements WxGoodService {
     @Autowired
     WxGoodMapper wxGoodMapper;
 
-    /**
-     * 首页商品列表
-     *
-     * @param pageNo     Integer
-     * @param pageSize   Integer
-     * @param categoryId Long
-     * @return List
-     */
-    @Override
-    public PageResult findHomeList(Integer pageNo, Integer pageSize, Long categoryId) {
-        if (pageNo == null || pageSize == null) {
-            return new PageResult();
-        }
-        PageHelper.startPage(pageNo, pageSize);
-        Page<Good> page = wxGoodMapper.findByCondition(categoryId, null);
-        return new PageResult<>(page);
-    }
 
     /**
      * 查询商品详情
@@ -51,7 +34,7 @@ public class WxGoodServiceImpl implements WxGoodService {
      */
     @Override
     public DataRet findById(Long goodId) {
-        if (StringUtils.isEmpty(goodId.toString())) {
+        if (goodId == null) {
             return new DataRet<>("query_error", "参数错误");
         }
         GoodExt good = wxGoodMapper.findById(goodId);
@@ -61,7 +44,7 @@ public class WxGoodServiceImpl implements WxGoodService {
         if (CommonEnum.OFF_SALE.getCode().equals(good.getOnSale())) {
             return new DataRet<>("ERROR", "商品已经下架");
         }
-//        //获取图片列表
+//        //获取banner图片列表
 //        List<MallImage> imgList = fileOperationMapper.findByTargetId(good.getId(), 0);
 //        good.setImgList(imgList);
         //TODO:获取图片
@@ -118,7 +101,7 @@ public class WxGoodServiceImpl implements WxGoodService {
      * @return GoodSnapshot
      */
     @Override
-    public DataRet findByGoodSnapshot(Long orderId) {
+    public DataRet findGoodSnapshot(Long orderId) {
         if (orderId == null) {
             return new DataRet("param_error", "参数错误");
         }

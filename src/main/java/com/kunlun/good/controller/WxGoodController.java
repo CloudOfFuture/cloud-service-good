@@ -23,13 +23,6 @@ public class WxGoodController {
     @Autowired
     private WxGoodService wxGoodService;
 
-    @GetMapping(value = "findHomeList")
-    public PageResult findHomeList(@RequestParam(value = "pageNo") Integer pageNo,
-                                   @RequestParam(value = "pageSize") Integer pageSize,
-                                   @RequestParam(value = "categoryId") Long categoryId) {
-        return wxGoodService.findHomeList(pageNo, pageSize, categoryId);
-    }
-
 
     /**
      * 商品详情
@@ -71,7 +64,7 @@ public class WxGoodController {
     @GetMapping(value = "findByCondition")
     public PageResult findByCondition(@RequestParam(value = "pageNo") Integer pageNo,
                                       @RequestParam(value = "pageSize") Integer pageSize,
-                                      @RequestParam(value = "categoryId") Long categoryId,
+                                      @RequestParam(value = "categoryId", required = false) Long categoryId,
                                       @RequestParam(value = "searchKey", required = false) String searchKey) {
         return wxGoodService.findByCondition(pageNo, pageSize, categoryId, searchKey);
     }
@@ -83,8 +76,8 @@ public class WxGoodController {
      * @param orderId Long
      * @return DataRet
      */
-    @GetMapping(value = "findByGoodSnapshot")
-    public DataRet findByGoodSnapshot(@RequestParam(value = "orderId") Long orderId) {
-        return wxGoodService.findByGoodSnapshot(orderId);
+    @GetMapping(value = "findGoodSnapshot")
+    public DataRet findGoodSnapshot(@RequestParam("orderId") Long orderId) {
+        return wxGoodService.findGoodSnapshot(orderId);
     }
 }

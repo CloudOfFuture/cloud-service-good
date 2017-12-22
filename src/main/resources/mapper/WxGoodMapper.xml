@@ -42,6 +42,7 @@
          AND good.status='NORMAL'
          AND good.on_sale='ON_SALE'
          AND good.audit='PASS_AUDIT'
+         GROUP BY good.id
     </select>
 
     <!--商品搜素-->
