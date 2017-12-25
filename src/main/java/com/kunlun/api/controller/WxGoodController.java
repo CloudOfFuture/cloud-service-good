@@ -1,6 +1,6 @@
-package com.kunlun.good.controller;
+package com.kunlun.api.controller;
 
-import com.kunlun.good.service.WxGoodService;
+import com.kunlun.api.service.WxGoodService;
 import com.kunlun.result.DataRet;
 import com.kunlun.result.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;

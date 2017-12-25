@@ -1,4 +1,4 @@
-package com.kunlun.good.service;
+package com.kunlun.api.service;
 
 import com.alibaba.druid.util.StringUtils;
 import com.github.pagehelper.Page;
@@ -7,7 +7,7 @@ import com.kunlun.category.CategoryGoodMapper;
 import com.kunlun.entity.GoodExt;
 import com.kunlun.entity.GoodLog;
 import com.kunlun.enums.CommonEnum;
-import com.kunlun.good.mapper.SellerGoodMapper;
+import com.kunlun.api.mapper.SellerGoodMapper;
 import com.kunlun.result.DataRet;
 import com.kunlun.result.PageResult;
 import com.kunlun.utils.CommonUtil;
@@ -83,8 +83,8 @@ public class SellerGoodServiceImpl implements SellerGoodService {
             return new DataRet<>("ERROR", "商品不存在");
         }
         //获取图片列表
-//        List<MallImage> imgList = fileOperationMapper.findByTargetId(good.getId(), 0);
-//        good.setImgList(imgList);
+//        List<MallImage> imgList = fileOperationMapper.findByTargetId(api.getId(), 0);
+//        api.setImgList(imgList);
         //TODO：图片查询
         return new DataRet<>(good);
     }

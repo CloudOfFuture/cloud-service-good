@@ -1,12 +1,10 @@
-package com.kunlun.good.service;
+package com.kunlun.api.service;
 
 
 import com.kunlun.entity.GoodExt;
-import com.kunlun.entity.GoodRequestParams;
 import com.kunlun.result.DataRet;
 import com.kunlun.result.PageResult;
 
-import java.util.Date;
 import java.util.List;
 
 /**

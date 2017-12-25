@@ -1,9 +1,8 @@
-package com.kunlun.good.mapper;
+package com.kunlun.api.mapper;
 
 import com.github.pagehelper.Page;
 import com.kunlun.entity.Good;
 import com.kunlun.entity.GoodExt;
-import com.kunlun.entity.GoodRequestParams;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

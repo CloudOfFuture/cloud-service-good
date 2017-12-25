@@ -1,4 +1,4 @@
-package com.kunlun.good.service;
+package com.kunlun.api.service;
 
 
 import com.alibaba.druid.util.StringUtils;
@@ -6,7 +6,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.kunlun.entity.*;
 import com.kunlun.enums.CommonEnum;
-import com.kunlun.good.mapper.WxGoodMapper;
+import com.kunlun.api.mapper.WxGoodMapper;
 import com.kunlun.result.DataRet;
 import com.kunlun.result.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,8 +45,8 @@ public class WxGoodServiceImpl implements WxGoodService {
             return new DataRet<>("ERROR", "商品已经下架");
         }
 //        //获取banner图片列表
-//        List<MallImage> imgList = fileOperationMapper.findByTargetId(good.getId(), 0);
-//        good.setImgList(imgList);
+//        List<MallImage> imgList = fileOperationMapper.findByTargetId(api.getId(), 0);
+//        api.setImgList(imgList);
         //TODO:获取图片
         wxGoodMapper.updateVisitTotal(goodId);
         return new DataRet<>(good);

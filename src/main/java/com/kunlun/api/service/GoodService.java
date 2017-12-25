@@ -1,4 +1,4 @@
-package com.kunlun.good.service;
+package com.kunlun.api.service;
 
 import com.kunlun.entity.Good;
 import com.kunlun.result.DataRet;

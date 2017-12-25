@@ -1,4 +1,4 @@
-package com.kunlun.good.controller;
+package com.kunlun.api.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -6,7 +6,7 @@ import com.kunlun.entity.GoodExt;
 import com.kunlun.entity.MallImage;
 import com.kunlun.result.DataRet;
 import com.kunlun.result.PageResult;
-import com.kunlun.good.service.SellerGoodService;
+import com.kunlun.api.service.SellerGoodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +33,7 @@ public class SellerGoodController {
      */
     @PostMapping(value = "/add")
     public DataRet add(@RequestBody JSONObject object) {
-        GoodExt goods = object.getObject("good", GoodExt.class);
+        GoodExt goods = object.getObject("api", GoodExt.class);
         List<MallImage> imgList = object.getJSONArray("imageList").toJavaList(MallImage.class);
         goods.setImgList(imgList);
         return sellerGoodService.add(goods);
@@ -47,7 +47,7 @@ public class SellerGoodController {
      */
     @PostMapping(value = "/update")
     public DataRet updateGood(@RequestBody JSONObject object) {
-        GoodExt goods = object.getObject("good", GoodExt.class);
+        GoodExt goods = object.getObject("api", GoodExt.class);
         if (object.containsKey("imageList")) {
             List<MallImage> imageList = object.getJSONArray("imageList").toJavaList(MallImage.class);
             goods.setImgList(imageList);

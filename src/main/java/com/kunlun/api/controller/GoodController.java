@@ -1,8 +1,8 @@
-package com.kunlun.good.controller;
+package com.kunlun.api.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.kunlun.entity.Good;
-import com.kunlun.good.service.GoodService;
+import com.kunlun.api.service.GoodService;
 import com.kunlun.result.DataRet;
 import com.kunlun.result.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
