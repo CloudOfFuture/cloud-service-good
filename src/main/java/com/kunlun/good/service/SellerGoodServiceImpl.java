@@ -5,6 +5,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.kunlun.category.CategoryGoodMapper;
 import com.kunlun.entity.GoodExt;
+import com.kunlun.entity.GoodLog;
 import com.kunlun.enums.CommonEnum;
 import com.kunlun.good.mapper.SellerGoodMapper;
 import com.kunlun.result.DataRet;
@@ -13,6 +14,7 @@ import com.kunlun.utils.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -32,6 +34,9 @@ public class SellerGoodServiceImpl implements SellerGoodService {
 
     @Autowired
     private CategoryGoodMapper categoryGoodMapper;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     /**
      * 新增商品
@@ -294,7 +299,11 @@ public class SellerGoodServiceImpl implements SellerGoodService {
      * @param goodId   Long
      */
     private void saveGoodLog(Long goodId, String goodName, String action) {
-        //TODO:保存日志
+        GoodLog goodLog = new GoodLog();
+        goodLog.setGoodId(goodId);
+        goodLog.setGoodName(goodName);
+        goodLog.setAction(action);
+        restTemplate.postForObject("http://cloud-ribbon-server/api/log/add/goodLog", goodLog, DataRet.class);
     }
 
 
