@@ -140,13 +140,16 @@ public class GoodServiceImpl implements GoodService {
         }
         Integer result = goodMapper.deleteByIdList(idList);
         if (result == 0) {
+            idList.forEach(goodId->{
+                addGoodLog("","批量删除失败",goodId);
+            });
             return new DataRet<>("ERROR", "批量删除失败");
         }
         if (idList.size() > result) {
             return new DataRet<>("ERROR", "未完全删除,部分商品已删除");
         }
         idList.forEach(goodId->{
-            addGoodLog("","批量删除商品",goodId);
+            addGoodLog("","批量删除商品成功",goodId);
         });
         return new DataRet<>("批量删除成功");
     }

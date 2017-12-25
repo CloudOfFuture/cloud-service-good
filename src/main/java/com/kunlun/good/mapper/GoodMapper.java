@@ -125,4 +125,5 @@ public interface GoodMapper {
      * @return
      */
     Integer updateStock(@Param("id") Long id,@Param("count") Integer count);
+
 }
