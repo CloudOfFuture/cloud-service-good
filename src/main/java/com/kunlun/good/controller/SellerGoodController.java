@@ -1,5 +1,6 @@
 package com.kunlun.good.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.kunlun.entity.GoodExt;
 import com.kunlun.entity.MallImage;
@@ -18,7 +19,7 @@ import java.util.List;
  * @desc
  */
 @RestController
-@RequestMapping("good")
+@RequestMapping("seller/good")
 public class SellerGoodController {
 
     @Autowired
@@ -27,8 +28,8 @@ public class SellerGoodController {
     /**
      * 创建商品
      *
-     * @param object
-     * @return
+     * @param object JSONObject
+     * @return DataRet
      */
     @PostMapping(value = "/add")
     public DataRet add(@RequestBody JSONObject object) {
@@ -42,7 +43,7 @@ public class SellerGoodController {
      * 修改商品
      *
      * @param object
-     * @return
+     * @return DataRet
      */
     @PostMapping(value = "/update")
     public DataRet updateGood(@RequestBody JSONObject object) {
@@ -58,11 +59,11 @@ public class SellerGoodController {
     /**
      * 批量删除商品
      *
-     * @return
+     * @return DataRet
      */
     @PostMapping(value = "/deleteByIdList")
-    public DataRet deleteByIdList(@RequestBody JSONObject jsonObject) {
-        List<Long> idList = jsonObject.getJSONArray("idList").toJavaList(Long.class);
+    public DataRet deleteByIdList(@RequestBody JSONArray jsonObject) {
+        List<Long> idList = jsonObject.toJavaList(Long.class);
         return sellerGoodService.deleteByIdList(idList);
     }
 
@@ -70,31 +71,33 @@ public class SellerGoodController {
      * 根据商品id查询商品
      *
      * @param id 商品id
-     * @return
+     * @return DataRet
      */
     @GetMapping(value = "/findById")
     public DataRet findById(@RequestParam(value = "id") Long id) {
         return sellerGoodService.findById(id);
     }
 
-
     /**
      * 条件查询商品列表
      *
-     * @param pageNo
-     * @param pageSize
-     * @param userId
-     * @param searchKey
-     * @param goodNo
-     * @param startDate
-     * @param endDate
-     * @param brandId
-     * @param onSale
-     * @param categoryId
-     * @param hot
-     * @param isNew
-     * @param freight
-     * @return
+     * @param pageNo     Integer
+     * @param pageSize   Integer
+     * @param userId     Long
+     * @param type       UNBIND_CATEGORY 未绑定类目
+     *                   UNBIND_ACTIVITY 未绑定活动
+     *                   BIND_ACTIVITY 已经绑定活动
+     * @param searchKey  String
+     * @param goodNo     String
+     * @param startDate  String
+     * @param endDate    String
+     * @param brandId    Long
+     * @param saleStatus String
+     * @param categoryId Long
+     * @param hot        String
+     * @param isNew      String
+     * @param freight    String
+     * @return List
      */
     @PostMapping(value = "/findByCondition")
     public PageResult findByCondition(@RequestParam(value = "pageNo") Integer pageNo,
@@ -118,8 +121,8 @@ public class SellerGoodController {
     /**
      * 批量商品上下架
      *
-     * @param object
-     * @return
+     * @param object JSONObject
+     * @return DataRet
      */
     @PostMapping(value = "/batchUpdateSaleStatus")
     public DataRet batchUpdateSaleStatus(@RequestBody JSONObject object) {
@@ -135,11 +138,11 @@ public class SellerGoodController {
      *
      * @param count 数量  小于0 扣减，大于0 增加库存
      * @param id    商品id，主键
-     * @return
+     * @return DataRet
      */
-    @GetMapping(value = "/updateGoodStock/{id}/{count}")
-    public DataRet updateGoodStock(@PathVariable("id") Long id,
-                                   @PathVariable("count") Integer count) {
+    @PostMapping(value = "/updateGoodStock")
+    public DataRet updateGoodStock(@RequestParam(value = "id") Long id,
+                                   @RequestParam(value = "count") Integer count) {
         return sellerGoodService.updateGoodStock(id, count);
     }
 }

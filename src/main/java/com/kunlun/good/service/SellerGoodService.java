@@ -46,6 +46,10 @@ public interface SellerGoodService {
      *
      * @param pageNo
      * @param pageSize
+     * @param userId
+     * @param type       UNBIND_CATEGORY 未绑定类目
+     *                   UNBIND_ACTIVITY 未绑定活动
+     *                   BIND_ACTIVITY 已经绑定活动
      * @param searchKey
      * @param goodNo
      * @param startDate
