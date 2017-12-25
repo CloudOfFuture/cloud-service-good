@@ -112,11 +112,14 @@ public class GoodServiceImpl implements GoodService {
      */
     @Override
     public DataRet<String> deleteById(Long id) {
+        Good good=goodMapper.findById(id);
         Integer result = goodMapper.deleteById(id);
-        if (result <= 0) {
-            return new DataRet<>("ERROR", "删除失败");
+        if (result > 0) {
+            restTemplate.getForObject("http://cloud-ribbon-server/api/log/add/goodLog?goodName="+good.getGoodName()+"&action=删除商品成功"+"&goodId="+id,DataRet.class);
+            return new DataRet<>("删除商品成功");
         }
-        return new DataRet<>("删除成功");
+        restTemplate.getForObject("http://cloud-ribbon-server/api/log/add/goodLog?goodName="+good.getGoodName()+"&action=删除商品失败"+"&goodId="+id,DataRet.class);
+        return new DataRet<>("ERROR","删除商品失败");
     }
 
 
