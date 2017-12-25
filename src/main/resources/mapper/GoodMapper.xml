@@ -184,7 +184,7 @@
         <if test="onSale!=null">on_sale=#{onSale},</if>
         last_update_date=now()
         WHERE id IN
-        <foreach collection="idList" index="index" item="item" open="(" separator="," close=")">
+        <foreach collection="goodIdList" index="index" item="item" open="(" separator="," close=")">
             #{item}
         </foreach>
     </update>
