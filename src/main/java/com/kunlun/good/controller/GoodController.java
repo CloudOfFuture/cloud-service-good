@@ -131,7 +131,7 @@ public class GoodController {
      * @return
      */
     @GetMapping("/updateSaleStatus")
-    public DataRet<String> updateSaleStatus(@RequestParam(value = "oSale") String onSale,
+    public DataRet<String> updateSaleStatus(@RequestParam(value = "onSale") String onSale,
                                             @RequestParam(value = "id") Long id){
         return goodService.updateSaleStatus(onSale,id);
     }

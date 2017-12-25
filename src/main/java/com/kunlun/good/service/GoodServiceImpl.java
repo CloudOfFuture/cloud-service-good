@@ -261,11 +261,13 @@ public class GoodServiceImpl implements GoodService {
      */
     @Override
     public DataRet<String> updateStock(Long id, Integer count) {
+        Good good=goodMapper.findById(id);
         Integer result=goodMapper.updateStock(id,count);
         if (result==0){
+            addGoodLog(good.getGoodName(),"库存修改失败",id);
             return new DataRet<>("ERROR","库存修改失败");
         }
-        //TODO 写入商品日志
+        addGoodLog(good.getGoodName(),"库存修改成功",id);
         return new DataRet<>("库存修改成功");
     }
 
