@@ -125,7 +125,8 @@ public class GoodServiceImpl implements GoodService {
             restTemplate.postForObject("http://cloud-ribbon-server/api/log/add/goodLog",goodLog,DataRet.class);
             return new DataRet<>("删除商品成功");
         }
-        restTemplate.getForObject("http://cloud-ribbon-server/api/log/add/goodLog?goodName="+good.getGoodName()+"&action=删除商品失败"+"&goodId="+id,DataRet.class);
+        goodLog.setAction("删除商品失败");
+        restTemplate.postForObject("http://cloud-ribbon-server/api/log/add/goodLog",goodLog,DataRet.class);
         return new DataRet<>("ERROR","删除商品失败");
     }
 
