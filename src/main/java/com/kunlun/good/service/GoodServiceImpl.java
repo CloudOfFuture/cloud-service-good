@@ -1,9 +1,12 @@
 package com.kunlun.good.service;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.util.StringUtil;
 import com.kunlun.entity.Good;
+import com.kunlun.entity.GoodLog;
 import com.kunlun.enums.CommonEnum;
 import com.kunlun.good.mapper.GoodMapper;
 import com.kunlun.result.DataRet;
@@ -113,9 +116,13 @@ public class GoodServiceImpl implements GoodService {
     @Override
     public DataRet<String> deleteById(Long id) {
         Good good=goodMapper.findById(id);
+        GoodLog goodLog=new GoodLog();
+        goodLog.setGoodId(id);
+        goodLog.setGoodName(good.getGoodName());
         Integer result = goodMapper.deleteById(id);
         if (result > 0) {
-            restTemplate.getForObject("http://cloud-ribbon-server/api/log/add/goodLog?goodName="+good.getGoodName()+"&action=删除商品成功"+"&goodId="+id,DataRet.class);
+            goodLog.setAction("删除商品成功");
+            restTemplate.postForObject("http://cloud-ribbon-server/api/log/add/goodLog",goodLog,DataRet.class);
             return new DataRet<>("删除商品成功");
         }
         restTemplate.getForObject("http://cloud-ribbon-server/api/log/add/goodLog?goodName="+good.getGoodName()+"&action=删除商品失败"+"&goodId="+id,DataRet.class);

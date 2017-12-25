@@ -149,7 +149,7 @@ public class SellerGoodServiceImpl implements SellerGoodService {
         }
         int result = sellerGoodMapper.deleteByIdList(idList);
         if (result == 0) {
-            return new DataRet<>("ERROR", "删除失败");
+            return new DataRet<>("ERROR", "删除失败(请检查商品是否已经下架)");
         }
         idList.forEach(goodId -> saveGoodLog(goodId, "", "批量删除商品"));
         return new DataRet<>("删除成功");
@@ -193,23 +193,27 @@ public class SellerGoodServiceImpl implements SellerGoodService {
         return new DataRet<>(action + "成功");
     }
 
+
     /**
-     * 条件查询列表（未绑定活动，未绑定类目，已经绑定活动，模糊查询）
+     * 条件查询商品列表
      *
-     * @param pageNo
-     * @param pageSize
-     * @param userId
-     * @param searchKey
-     * @param goodNo
-     * @param startDate
-     * @param endDate
-     * @param brandId
-     * @param saleStatus
-     * @param categoryId
-     * @param hot
-     * @param isNew
-     * @param freight
-     * @return
+     * @param pageNo     Integer
+     * @param pageSize   Integer
+     * @param userId     Long
+     * @param type       UNBIND_CATEGORY 未绑定类目
+     *                   UNBIND_ACTIVITY 未绑定活动
+     *                   BIND_ACTIVITY 已经绑定活动
+     * @param searchKey  String
+     * @param goodNo     String
+     * @param startDate  String
+     * @param endDate    String
+     * @param brandId    Long
+     * @param saleStatus String
+     * @param categoryId Long
+     * @param hot        String
+     * @param isNew      String
+     * @param freight    String
+     * @return List
      */
     @Override
     public PageResult findByCondition(Integer pageNo,
