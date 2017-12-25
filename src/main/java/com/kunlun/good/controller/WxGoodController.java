@@ -27,12 +27,12 @@ public class WxGoodController {
     /**
      * 商品详情
      *
-     * @param goodId Long
+     * @param id Long
      * @return Good
      */
     @GetMapping(value = "findById")
-    public DataRet findById(@RequestParam(value = "goodId") Long goodId) {
-        return wxGoodService.findById(goodId);
+    public DataRet findById(@RequestParam(value = "id") Long id) {
+        return wxGoodService.findById(id);
     }
 
 
