@@ -37,7 +37,7 @@ public class WxGoodServiceImpl implements WxGoodService {
      * @return GoodExt
      */
     @Override
-    public DataRet findById(Long goodId) {
+    public DataRet<Good> findById(Long goodId) {
         if (goodId == null) {
             return new DataRet<>("query_error", "参数错误");
         }
@@ -120,7 +120,7 @@ public class WxGoodServiceImpl implements WxGoodService {
      * @return
      */
     @Override
-    public DataRet addGoodSnapShoot(GoodSnapshot goodSnapshot) {
+    public DataRet<String> addGoodSnapShoot(GoodSnapshot goodSnapshot) {
         Integer result = wxGoodSnapShotMapper.add(goodSnapshot);
         if(result<=0){
             return new DataRet("Error","新增失败");

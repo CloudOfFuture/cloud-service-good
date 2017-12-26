@@ -180,15 +180,15 @@ public class GoodController {
     }
 
     /**
-     * 商品检查
+     * 商品信息校验
      * @param goodId
      * @return
      */
     @GetMapping("checkGood")
-    public String checkGood(@RequestParam(value = "goodId") Long goodId,
+    public DataRet<String> checkGood(@RequestParam(value = "goodId") Long goodId,
                                      @RequestParam(value = "count")Integer count,
                                      @RequestParam(value = "orderFee")Integer orderFee) {
-        return null;
+        return goodService.checkGood(goodId,count,orderFee);
     }
 
 }

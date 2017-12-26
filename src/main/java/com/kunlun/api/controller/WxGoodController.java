@@ -86,7 +86,7 @@ public class WxGoodController {
      * @return
      */
     @PostMapping(value = "addGoodSnapShot")
-    public DataRet addGoodSnapShot(@RequestBody GoodSnapshot goodSnapshot){
+    public DataRet<String> addGoodSnapShot(@RequestBody GoodSnapshot goodSnapshot){
         return wxGoodService.addGoodSnapShoot(goodSnapshot);
     }
 }

@@ -128,5 +128,5 @@ public interface GoodService {
      * @param orderFee
      * @return
      */
-    String checkGood(Long goodId, Integer count, Integer orderFee);
+    DataRet<String> checkGood(Long goodId, Integer count, Integer orderFee);
 }

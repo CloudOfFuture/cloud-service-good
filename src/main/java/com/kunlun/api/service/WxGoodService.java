@@ -1,5 +1,6 @@
 package com.kunlun.api.service;
 
+import com.kunlun.entity.Good;
 import com.kunlun.entity.GoodSnapshot;
 import com.kunlun.result.DataRet;
 import com.kunlun.result.PageResult;
@@ -18,7 +19,7 @@ public interface WxGoodService {
      * @param goodId Long
      * @return Good
      */
-    DataRet findById(Long goodId);
+    DataRet<Good> findById(Long goodId);
 
     /**
      * 查询商品评价列表
@@ -59,5 +60,5 @@ public interface WxGoodService {
      * @param goodSnapshot
      * @return
      */
-    DataRet addGoodSnapShoot(GoodSnapshot goodSnapshot);
+    DataRet<String> addGoodSnapShoot(GoodSnapshot goodSnapshot);
 }
