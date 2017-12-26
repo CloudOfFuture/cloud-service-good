@@ -1,5 +1,6 @@
 package com.kunlun.api.service;
 
+import com.kunlun.entity.GoodSnapshot;
 import com.kunlun.result.DataRet;
 import com.kunlun.result.PageResult;
 
@@ -52,4 +53,11 @@ public interface WxGoodService {
      * @return DataRet
      */
     DataRet findGoodSnapshot(Long orderId);
+
+    /**
+     * 新增商品快照
+     * @param goodSnapshot
+     * @return
+     */
+    DataRet addGoodSnapShoot(GoodSnapshot goodSnapshot);
 }

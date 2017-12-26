@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kunlun.api.mapper.WxGoodSnapShotMapper">
+    <insert id="add" parameterType="com.kunlun.entity.GoodSnapshot">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO t_good_snapshot(
+        good_snapshot_no,
+        good_name,
+        good_description,
+        promotion,
+        price,
+        discount,
+        main_image_url,
+        create_date,
+        seller_id,
+        good_id,
+        rich_content,
+        good_no) VALUES(
+        #{goodSnapshotNo},
+        #{goodName},
+        #{goodDescription},
+        #{promotion},
+        #{price},
+        #{discount},
+        #{mainImageUrl},
+        #{createDate},
+        #{sellerId},
+        #{goodId},
+        #{richContent},
+        #{goodNo}
+        )
+    </insert>
+</mapper>

@@ -4,6 +4,7 @@ package com.kunlun.api.service;
 import com.alibaba.druid.util.StringUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.kunlun.api.mapper.WxGoodSnapShotMapper;
 import com.kunlun.entity.*;
 import com.kunlun.enums.CommonEnum;
 import com.kunlun.api.mapper.WxGoodMapper;
@@ -24,6 +25,9 @@ public class WxGoodServiceImpl implements WxGoodService {
 
     @Autowired
     WxGoodMapper wxGoodMapper;
+
+    @Autowired
+    WxGoodSnapShotMapper wxGoodSnapShotMapper;
 
 
     /**
@@ -107,5 +111,20 @@ public class WxGoodServiceImpl implements WxGoodService {
         }
         GoodSnapshot goodSnapshot = wxGoodMapper.findByGoodSnapshot(orderId);
         return new DataRet<>(goodSnapshot);
+    }
+
+    /**
+     * 新增商品快照
+     *
+     * @param goodSnapshot
+     * @return
+     */
+    @Override
+    public DataRet addGoodSnapShoot(GoodSnapshot goodSnapshot) {
+        Integer result = wxGoodSnapShotMapper.add(goodSnapshot);
+        if(result<=0){
+            return new DataRet("Error","新增失败");
+        }
+        return new DataRet("新增成功");
     }
 }
