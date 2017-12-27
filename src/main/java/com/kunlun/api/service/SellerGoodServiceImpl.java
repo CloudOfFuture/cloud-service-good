@@ -3,6 +3,8 @@ package com.kunlun.api.service;
 import com.alibaba.druid.util.StringUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.kunlun.api.client.CategoryClient;
+import com.kunlun.api.client.LogClient;
 import com.kunlun.category.CategoryGoodMapper;
 import com.kunlun.entity.GoodExt;
 import com.kunlun.entity.GoodLog;
@@ -36,7 +38,10 @@ public class SellerGoodServiceImpl implements SellerGoodService {
     private CategoryGoodMapper categoryGoodMapper;
 
     @Autowired
-    private RestTemplate restTemplate;
+    private LogClient logClient;
+
+    @Autowired
+    private CategoryClient categoryClient;
 
     /**
      * 新增商品
@@ -276,7 +281,7 @@ public class SellerGoodServiceImpl implements SellerGoodService {
      * @param goodId     Long
      */
     private void bindCategoryGood(Long categoryId, Long goodId) {
-        categoryGoodMapper.bindCategoryGood(categoryId, goodId);
+        categoryClient.bind(categoryId,goodId);
     }
 
     /**
@@ -288,7 +293,7 @@ public class SellerGoodServiceImpl implements SellerGoodService {
         if (goodId == null) {
             return;
         }
-        categoryGoodMapper.unbindWithGoodId(goodId);
+        categoryClient.unbinding(goodId);
     }
 
     /**
@@ -303,7 +308,7 @@ public class SellerGoodServiceImpl implements SellerGoodService {
         goodLog.setGoodId(goodId);
         goodLog.setGoodName(goodName);
         goodLog.setAction(action);
-        restTemplate.postForObject("http://cloud-ribbon-server/api/log/add/goodLog", goodLog, DataRet.class);
+        logClient.saveGoodLog(goodLog);
     }
 
 

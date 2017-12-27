@@ -3,6 +3,7 @@ package com.kunlun.api.service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.util.StringUtil;
+import com.kunlun.api.client.LogClient;
 import com.kunlun.entity.Good;
 import com.kunlun.entity.GoodLog;
 import com.kunlun.enums.CommonEnum;
@@ -28,7 +29,7 @@ public class GoodServiceImpl implements GoodService {
     private GoodMapper goodMapper;
 
     @Autowired
-    private RestTemplate restTemplate;
+    private LogClient logClient;
 
 
     /**
@@ -310,6 +311,6 @@ public class GoodServiceImpl implements GoodService {
         goodLog.setGoodName(goodName);
         goodLog.setAction(action);
         goodLog.setGoodId(goodId);
-        restTemplate.postForObject("http://cloud-ribbon-server/api/log/add/goodLog",goodLog,DataRet.class);
+        logClient.saveGoodLog(goodLog);
     }
 }
