@@ -3,12 +3,16 @@ package com.kunlun.api.service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.util.StringUtil;
+import com.kunlun.api.client.CategoryClient;
+import com.kunlun.api.client.LogClient;
 import com.kunlun.entity.Good;
+import com.kunlun.entity.GoodExt;
 import com.kunlun.entity.GoodLog;
 import com.kunlun.enums.CommonEnum;
 import com.kunlun.api.mapper.GoodMapper;
 import com.kunlun.result.DataRet;
 import com.kunlun.result.PageResult;
+import com.kunlun.utils.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -28,7 +32,10 @@ public class GoodServiceImpl implements GoodService {
     private GoodMapper goodMapper;
 
     @Autowired
-    private RestTemplate restTemplate;
+    private LogClient logClient;
+
+    @Autowired
+    private CategoryClient categoryClient;
 
 
     /**
@@ -43,11 +50,15 @@ public class GoodServiceImpl implements GoodService {
             return new DataRet<>("ERROR", "添加失败");
         }
         Integer result = goodMapper.add(good);
-        if (result > 0) {
-            addGoodLog(good.getGoodName(),"添加商品",good.getId());
-            return new DataRet<>("添加成功");
+        if (result == 0) {
+            return new DataRet<>("ERROR", "添加失败");
         }
-        return new DataRet<>("ERROR","添加失败");
+        //TODO 图片
+        if (good.getCategoryId() != null) {
+            categoryClient.bind(good.getCategoryId(), good.getId());
+        }
+        addGoodLog(good.getGoodName(), "添加商品", good.getId());
+        return new DataRet<>("添加成功");
     }
 
 
@@ -90,7 +101,10 @@ public class GoodServiceImpl implements GoodService {
     @Override
     public PageResult findByCondition(Integer pageNo, Integer pageSize, String searchKey, String goodNo,
                                       Date startDate, Date endDate, Long brandId, String onSale, Long categoryId,
-                                      String hot, String isNew, String freight) {
+                                      String hot, String isNew, String freight,Long sellerId,String type) {
+        if (sellerId == null) {
+            return new PageResult();
+        }
         if (StringUtil.isEmpty(String.valueOf(pageNo)) || StringUtil.isEmpty(String.valueOf(pageSize))) {
             return new PageResult("ERROR", "参数错误");
         }
@@ -101,8 +115,28 @@ public class GoodServiceImpl implements GoodService {
         if (!StringUtil.isEmpty(searchKey)) {
             searchKey = ("%" + searchKey + "%");
         }
-        Page<Good> page = goodMapper.list(searchKey, goodNo, startDate, endDate, brandId, onSale, categoryId, hot, isNew, freight);
-        return new PageResult(page);
+        Page<GoodExt> page;
+        boolean getUnbindCategory = CommonEnum.UNBIND_CATEGORY.getCode().equals(type);
+        boolean getBindActivity = CommonEnum.BIND_ACTIVITY.getCode().equals(type);
+        boolean getUnbindActivity = CommonEnum.UNBIND_ACTIVITY.getCode().equals(type);
+        if (getUnbindCategory) {
+            //未绑定类目的商品列表
+            page = goodMapper.findForCategory(sellerId, type, searchKey, goodNo, startDate,
+                    endDate, brandId, onSale, categoryId, hot, isNew, freight);
+        } else if (getBindActivity) {
+            //已经绑定活动的商品列表搜索
+            page = goodMapper.findByActivityId(sellerId, type, searchKey, goodNo, startDate,
+                    endDate, brandId, onSale, categoryId, hot, isNew, freight);
+        } else if (getUnbindActivity) {
+            //未绑定活动的商品列表
+            page = goodMapper.findForActivity(sellerId, type, searchKey, goodNo, startDate,
+                    endDate, brandId, onSale, categoryId, hot, isNew, freight);
+        } else {
+            //基础条件查询
+            page = goodMapper.list(sellerId, type, searchKey, goodNo, startDate,
+                    endDate, brandId, onSale, categoryId, hot, isNew, freight);
+        }
+        return new PageResult<>(page);
     }
 
 
@@ -114,14 +148,14 @@ public class GoodServiceImpl implements GoodService {
      */
     @Override
     public DataRet<String> deleteById(Long id) {
-        Good good=goodMapper.findById(id);
+        Good good = goodMapper.findById(id);
         Integer result = goodMapper.deleteById(id);
         if (result > 0) {
-            addGoodLog(good.getGoodName(),"删除商品成功",id);
+            addGoodLog(good.getGoodName(), "删除商品成功", id);
             return new DataRet<>("删除商品成功");
         }
-        addGoodLog(good.getGoodName(),"删除商品失败",id);
-        return new DataRet<>("ERROR","删除商品失败");
+        addGoodLog(good.getGoodName(), "删除商品失败", id);
+        return new DataRet<>("ERROR", "删除商品失败");
     }
 
 
@@ -138,16 +172,16 @@ public class GoodServiceImpl implements GoodService {
         }
         Integer result = goodMapper.deleteByIdList(idList);
         if (result == 0) {
-            idList.forEach(goodId->{
-                addGoodLog("","批量删除失败",goodId);
+            idList.forEach(goodId -> {
+                addGoodLog("", "批量删除失败", goodId);
             });
             return new DataRet<>("ERROR", "批量删除失败");
         }
         if (idList.size() > result) {
             return new DataRet<>("ERROR", "未完全删除,部分商品已删除");
         }
-        idList.forEach(goodId->{
-            addGoodLog("","批量删除商品成功",goodId);
+        idList.forEach(goodId -> {
+            addGoodLog("", "批量删除商品成功", goodId);
         });
         return new DataRet<>("批量删除成功");
     }
@@ -170,7 +204,13 @@ public class GoodServiceImpl implements GoodService {
         if (CommonEnum.ON_SALE.getCode().equals(newGood.getOnSale())) {
             return new DataRet<>("ERROR", "上架商品不能修改");
         }
-        //TODO 类目解绑
+        if (newGood.getCategoryId() != null && good.getCategoryId() == null) {
+            categoryClient.unbinding(newGood.getId());
+        }
+        if (newGood.getCategoryId() != good.getCategoryId()) {
+            categoryClient.unbinding(newGood.getId());
+            categoryClient.bind(good.getCategoryId(), good.getId());
+        }
         //TODO 图片删除更新
         Integer result = goodMapper.update(good);
         if (result == 0) {
@@ -189,17 +229,17 @@ public class GoodServiceImpl implements GoodService {
      */
     @Override
     public DataRet<String> updateSaleStatus(String onSale, Long id) {
-        Good good=goodMapper.findById(id);
+        Good good = goodMapper.findById(id);
         if (StringUtil.isEmpty(onSale) || id == null) {
             return new DataRet<>("ERROR", "参数错误");
         }
         Integer result = goodMapper.updateSaleStatus(onSale, id);
         if (result > 0) {
             String saleResult = CommonEnum.ON_SALE.getCode().equals(onSale) ? "商品上架成功" : "商品下架成功";
-            addGoodLog(good.getGoodName(),saleResult,id);
+            addGoodLog(good.getGoodName(), saleResult, id);
             return new DataRet<>(saleResult);
         }
-        addGoodLog(good.getGoodName(),CommonEnum.ON_SALE.getCode().equals(onSale) ? "商品上架失败" : "商品下架失败",id);
+        addGoodLog(good.getGoodName(), CommonEnum.ON_SALE.getCode().equals(onSale) ? "商品上架失败" : "商品下架失败", id);
         return new DataRet<>("ERROR", CommonEnum.ON_SALE.getCode().equals(onSale) ? "商品上架失败" : "商品下架失败");
     }
 
@@ -219,7 +259,7 @@ public class GoodServiceImpl implements GoodService {
         Integer result = goodMapper.updateSaleList(onSale, goodIdList);
         if (result > 0 && result == goodIdList.size()) {
             String updateResult = CommonEnum.ON_SALE.getCode().equals(onSale) ? "商品批量上架成功" : "商品批量下架成功";
-            goodIdList.forEach(goodId->addGoodLog("",updateResult,goodId));
+            goodIdList.forEach(goodId -> addGoodLog("", updateResult, goodId));
             return new DataRet<>(updateResult);
         }
         if (goodIdList.size() > result) {
@@ -247,7 +287,7 @@ public class GoodServiceImpl implements GoodService {
         }
         Integer result = goodMapper.audit(audit, reason, id);
         if (result == 0) {
-            return new DataRet<>("ERROR","审核失败");
+            return new DataRet<>("ERROR", "审核失败");
         }
         return new DataRet<>("审核成功");
     }
@@ -262,13 +302,13 @@ public class GoodServiceImpl implements GoodService {
      */
     @Override
     public DataRet<String> updateStock(Long id, Integer count) {
-        Good good=goodMapper.findById(id);
-        Integer result=goodMapper.updateStock(id,count);
-        if (result==0){
-            addGoodLog(good.getGoodName(),"库存修改失败",id);
-            return new DataRet<>("ERROR","库存修改失败");
+        Good good = goodMapper.findById(id);
+        Integer result = goodMapper.updateStock(id, count);
+        if (result == 0) {
+            addGoodLog(good.getGoodName(), "库存修改失败", id);
+            return new DataRet<>("ERROR", "库存修改失败");
         }
-        addGoodLog(good.getGoodName(),"库存修改成功",id);
+        addGoodLog(good.getGoodName(), "库存修改成功", id);
         return new DataRet<>("库存修改成功");
     }
 
@@ -284,32 +324,32 @@ public class GoodServiceImpl implements GoodService {
     public DataRet<Good> checkGood(Long goodId, Integer count, Integer orderFee) {
         Good good = goodMapper.findById(goodId);
         if (null == good || good.getStock() <= 0) {
-            return new DataRet<>("ERROR","商品库存不足");
+            return new DataRet<>("ERROR", "商品库存不足");
         }
         if (CommonEnum.OFF_SALE.getCode().equals(good.getOnSale())) {
-            return new DataRet<>("ERROR","商品已下架");
+            return new DataRet<>("ERROR", "商品已下架");
         }
         if (orderFee != 0 && count != 0) {
             int unitFee = orderFee / count;
             if (good.getPrice() != unitFee) {
-                return new DataRet<>("ERROR","商品信息已过期，请重新下单");
+                return new DataRet<>("ERROR", "商品信息已过期，请重新下单");
             }
         }
         return new DataRet<>(good);
     }
 
     /**
-     *添加商品日志
+     * 添加商品日志
      *
      * @param goodName
      * @param action
      * @param goodId
      */
-    private void addGoodLog(String goodName,String action,Long goodId){
-        GoodLog goodLog=new GoodLog();
+    private void addGoodLog(String goodName, String action, Long goodId) {
+        GoodLog goodLog = new GoodLog();
         goodLog.setGoodName(goodName);
         goodLog.setAction(action);
         goodLog.setGoodId(goodId);
-        restTemplate.postForObject("http://cloud-ribbon-server/api/log/add/goodLog",goodLog,DataRet.class);
+        logClient.saveGoodLog(goodLog);
     }
 }

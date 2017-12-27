@@ -71,6 +71,8 @@ public class GoodController {
     @GetMapping("/findByCondition")
     public PageResult findByCondition(@RequestParam(value = "pageNo") Integer pageNo,
                                       @RequestParam(value = "pageSize") Integer pageSize,
+                                      @RequestParam(value = "sellerId") Long sellerId,
+                                      @RequestParam(value = "type") String type,
                                       @RequestParam(value = "searchKey",required = false) String searchKey,
                                       @RequestParam(value = "goodNo",required = false) String goodNo,
                                       @RequestParam(value = "startDate",required = false) Date startDate,
@@ -82,7 +84,7 @@ public class GoodController {
                                       @RequestParam(value = "isNew",required = false) String isNew,
                                       @RequestParam(value = "freight",required = false) String freight) {
         return goodService.findByCondition(pageNo, pageSize, searchKey, goodNo, startDate, endDate,
-                brandId, onSale, categoryId, hot, isNew, freight);
+                brandId, onSale, categoryId, hot, isNew, freight,sellerId,type);
     }
 
     /**

@@ -62,7 +62,7 @@ public interface SellerGoodService {
      */
     PageResult findByCondition(Integer pageNo,
                                Integer pageSize,
-                               Long userId,
+                               Long sellerId,
                                String type,
                                String searchKey,
                                String goodNo,
