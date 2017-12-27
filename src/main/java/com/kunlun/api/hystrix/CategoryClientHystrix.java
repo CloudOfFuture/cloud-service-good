@@ -2,12 +2,14 @@ package com.kunlun.api.hystrix;
 
 import com.kunlun.api.client.CategoryClient;
 import com.kunlun.result.DataRet;
+import org.springframework.stereotype.Component;
 
 /**
  * @author by hmy
  * @version <0.1>
  * @created on 2017-12-27.
  */
+@Component
 public class CategoryClientHystrix implements CategoryClient {
 
     /**
