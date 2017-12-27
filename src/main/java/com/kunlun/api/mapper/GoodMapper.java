@@ -2,6 +2,7 @@ package com.kunlun.api.mapper;
 
 import com.github.pagehelper.Page;
 import com.kunlun.entity.Good;
+import com.kunlun.entity.GoodExt;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -34,30 +35,125 @@ public interface GoodMapper {
 
 
     /**
-     * 分页查询
+     * 条件查询
      *
-     * @param searchKey
-     * @param goodNo
-     * @param startDate
-     * @param endDate
-     * @param brandId
-     * @param onSale
-     * @param categoryId
-     * @param hot
-     * @param isNew
-     * @param freight
-     * @return
+     * @param userId     Long
+     * @param type       String
+     * @param searchKey  String
+     * @param goodNo     String
+     * @param startDate  String
+     * @param endDate    String
+     * @param brandId    String
+     * @param saleStatus String
+     * @param categoryId Long
+     * @param hot        String
+     * @param isNew      String
+     * @param freight    String
+     * @return List
      */
-    Page<Good> list(@Param("searchKey") String searchKey,
-                    @Param("goodNo") String goodNo,
-                    @Param("startDate")Date startDate,
-                    @Param("endDate") Date endDate,
-                    @Param("brandId") Long brandId,
-                    @Param("onSale") String onSale,
-                    @Param("categoryId") Long categoryId,
-                    @Param("hot") String hot,
-                    @Param("isNew") String isNew,
-                    @Param("freight") String freight);
+    Page<GoodExt> list(@Param("sellerId") Long sellerId,
+                                  @Param("type") String type,
+                                  @Param("searchKey") String searchKey,
+                                  @Param("goodNo") String goodNo,
+                                  @Param("startDate") Date startDate,
+                                  @Param("endDate") Date endDate,
+                                  @Param("brandId") Long brandId,
+                                  @Param("saleStatus") String saleStatus,
+                                  @Param("categoryId") Long categoryId,
+                                  @Param("hot") String hot,
+                                  @Param("isNew") String isNew,
+                                  @Param("freight") String freight);
+
+
+    /**
+     * 未绑定活动的商品列表
+     *
+     * @param userId     Long
+     * @param type       String
+     * @param searchKey  String
+     * @param goodNo     String
+     * @param startDate  String
+     * @param endDate    String
+     * @param brandId    String
+     * @param onSale     String
+     * @param categoryId Long
+     * @param hot        String
+     * @param isNew      String
+     * @param freight    String
+     * @return Page
+     */
+    Page<GoodExt> findForActivity(@Param("sellerId") Long sellerId,
+                                  @Param("type") String type,
+                                  @Param("searchKey") String searchKey,
+                                  @Param("goodNo") String goodNo,
+                                  @Param("startDate") Date startDate,
+                                  @Param("endDate") Date endDate,
+                                  @Param("brandId") Long brandId,
+                                  @Param("onSale") String onSale,
+                                  @Param("categoryId") Long categoryId,
+                                  @Param("hot") String hot,
+                                  @Param("isNew") String isNew,
+                                  @Param("freight") String freight);
+
+    /**
+     * 根据活动id作为主要条件查询列表
+     *
+     * @param userId     Long
+     * @param type       String
+     * @param searchKey  String
+     * @param goodNo     String
+     * @param startDate  String
+     * @param endDate    String
+     * @param brandId    String
+     * @param onSale     String
+     * @param categoryId Long
+     * @param hot        String
+     * @param isNew      String
+     * @param freight    String
+     * @return Page
+     */
+    Page<GoodExt> findByActivityId(@Param("sellerId") Long sellerId,
+                                   @Param("type") String type,
+                                   @Param("searchKey") String searchKey,
+                                   @Param("goodNo") String goodNo,
+                                   @Param("startDate") Date startDate,
+                                   @Param("endDate") Date endDate,
+                                   @Param("brandId") Long brandId,
+                                   @Param("onSale") String onSale,
+                                   @Param("categoryId") Long categoryId,
+                                   @Param("hot") String hot,
+                                   @Param("isNew") String isNew,
+                                   @Param("freight") String freight);
+
+    /**
+     * 未绑定类目的商品列表s
+     *
+     * @param userId     Long
+     * @param type       String
+     * @param searchKey  String
+     * @param goodNo     String
+     * @param startDate  String
+     * @param endDate    String
+     * @param brandId    String
+     * @param onSale     String
+     * @param categoryId Long
+     * @param hot        String
+     * @param isNew      String
+     * @param freight    String
+     * @return Page
+     */
+    Page<GoodExt> findForCategory(@Param("sellerId") Long sellerId,
+                                  @Param("type") String type,
+                                  @Param("searchKey") String searchKey,
+                                  @Param("goodNo") String goodNo,
+                                  @Param("startDate") Date startDate,
+                                  @Param("endDate") Date endDate,
+                                  @Param("brandId") Long brandId,
+                                  @Param("onSale") String onSale,
+                                  @Param("categoryId") Long categoryId,
+                                  @Param("hot") String hot,
+                                  @Param("isNew") String isNew,
+                                  @Param("freight") String freight);
 
 
     /**

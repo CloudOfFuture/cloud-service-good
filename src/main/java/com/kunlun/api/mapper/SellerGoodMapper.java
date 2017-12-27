@@ -74,7 +74,7 @@ public interface SellerGoodMapper {
     /**
      * 条件查询
      *
-     * @param userId     Long
+     * @param sellerId     Long
      * @param type       String
      * @param searchKey  String
      * @param goodNo     String
@@ -88,7 +88,7 @@ public interface SellerGoodMapper {
      * @param freight    String
      * @return List
      */
-    Page<GoodExt> findByCondition(@Param("userId") Long userId,
+    Page<GoodExt> findByCondition(@Param("sellerId") Long sellerId,
                                   @Param("type") String type,
                                   @Param("searchKey") String searchKey,
                                   @Param("goodNo") String goodNo,
@@ -105,7 +105,7 @@ public interface SellerGoodMapper {
     /**
      * 未绑定活动的商品列表
      *
-     * @param userId     Long
+     * @param sellerId     Long
      * @param type       String
      * @param searchKey  String
      * @param goodNo     String
@@ -119,7 +119,7 @@ public interface SellerGoodMapper {
      * @param freight    String
      * @return Page
      */
-    Page<GoodExt> findForActivity(@Param("user_id") Long userId,
+    Page<GoodExt> findForActivity(@Param("seller_id") Long sellerId,
                                   @Param("type") String type,
                                   @Param("searchKey") String searchKey,
                                   @Param("good_no") String goodNo,
@@ -135,7 +135,7 @@ public interface SellerGoodMapper {
     /**
      * 根据活动id作为主要条件查询列表
      *
-     * @param userId     Long
+     * @param sellerId     Long
      * @param type       String
      * @param searchKey  String
      * @param goodNo     String
@@ -149,7 +149,7 @@ public interface SellerGoodMapper {
      * @param freight    String
      * @return Page
      */
-    Page<GoodExt> findByActivityId(@Param("user_id") Long userId,
+    Page<GoodExt> findByActivityId(@Param("seller_id") Long sellerId,
                                    @Param("type") String type,
                                    @Param("searchKey") String searchKey,
                                    @Param("good_no") String goodNo,
@@ -165,7 +165,7 @@ public interface SellerGoodMapper {
     /**
      * 未绑定类目的商品列表s
      *
-     * @param userId     Long
+     * @param sellerId     Long
      * @param type       String
      * @param searchKey  String
      * @param goodNo     String
@@ -179,7 +179,7 @@ public interface SellerGoodMapper {
      * @param freight    String
      * @return Page
      */
-    Page<GoodExt> findForCategory(@Param("user_id") Long userId,
+    Page<GoodExt> findForCategory(@Param("seller_id") Long sellerId,
                                   @Param("type") String type,
                                   @Param("searchKey") String searchKey,
                                   @Param("good_no") String goodNo,
