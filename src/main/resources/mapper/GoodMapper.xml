@@ -91,7 +91,7 @@
         FROM t_good good
         LEFT  JOIN t_activity_good  tacg ON tacg.good_id=good.id
         LEFT JOIN t_category_good categorygood ON categorygood.good_id=good.id
-        WHERE good.id=#{goodId}
+        WHERE good.id=#{id}
         GROUP BY  good.id
     </select>
 
