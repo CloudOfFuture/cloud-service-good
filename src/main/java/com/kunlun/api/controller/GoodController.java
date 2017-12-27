@@ -184,7 +184,7 @@ public class GoodController {
      * @param goodId
      * @return
      */
-    @GetMapping("checkGood")
+    @GetMapping("/checkGood")
     public DataRet<Good> checkGood(@RequestParam(value = "goodId") Long goodId,
                                      @RequestParam(value = "count")Integer count,
                                      @RequestParam(value = "orderFee")Integer orderFee) {
