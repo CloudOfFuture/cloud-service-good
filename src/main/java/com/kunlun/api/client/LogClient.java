@@ -21,6 +21,6 @@ public interface LogClient {
      * @param goodLog
      * @return
      */
-    @PostMapping("/add/goodLog")
+    @PostMapping("/log/add/goodLog")
      DataRet<String> saveGoodLog(@RequestBody GoodLog goodLog);
 }
