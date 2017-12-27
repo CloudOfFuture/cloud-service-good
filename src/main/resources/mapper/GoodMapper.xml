@@ -31,6 +31,7 @@
         status,
         rich_content,
         seo,
+        audit,
         freight_fee)
         VALUES (
         #{goodName},
@@ -54,36 +55,44 @@
         'NORMAL',
         #{richContent},
         #{seo},
+        'AUDITING',
         #{freightFee})
     </insert>
 
 
     <!--获取商品详情-->
-    <select id="findById" resultType="com.kunlun.entity.Good">
+    <select id="findById" resultType="com.kunlun.entity.GoodExt">
         SELECT
-        id,
-        good_name,
-        description,
-        promotion,
-        price,
-        sale_volume,
-        discount,
-        stock,
-        on_sale,
-        hot,
-        seo,
-        is_new,
-        freight,
-        brand_id,
-        seller_id,
-        visit_total,
-        good_no,
-        audit,
-        status,
-        rich_content,
-        main_image_url,
-        freight_fee
-        FROM t_good WHERE id=#{id}
+        good.id,
+        good.good_name,
+        good.description,
+        good.promotion,
+        good.price,
+        good.sale_volume,
+        good.discount,
+        good.stock,
+        good.on_sale,
+        good.hot,
+        good.seo,
+        good.audit,
+        good.is_new,
+        good.create_date,
+        good.last_update_date,
+        good.freight,
+        good.brand_id,
+        good.seller_id,
+        good.visit_total,
+        good.good_no,
+        good.status,
+        good.rich_content,
+        good.main_image_url,
+        tacg.activity_id as activityId,
+        categorygood.category_id as categoryId
+        FROM t_good good
+        LEFT  JOIN t_activity_good  tacg ON tacg.good_id=good.id
+        LEFT JOIN t_category_good categorygood ON categorygood.good_id=good.id
+        WHERE good.id=#{goodId}
+        GROUP BY  good.id
     </select>
 
     <!--分页查询-->
