@@ -5,7 +5,6 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.kunlun.api.client.CategoryClient;
 import com.kunlun.api.client.LogClient;
-import com.kunlun.category.CategoryGoodMapper;
 import com.kunlun.entity.GoodExt;
 import com.kunlun.entity.GoodLog;
 import com.kunlun.enums.CommonEnum;
@@ -16,7 +15,6 @@ import com.kunlun.utils.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -34,8 +32,6 @@ public class SellerGoodServiceImpl implements SellerGoodService {
     private SellerGoodMapper sellerGoodMapper;
 
 
-    @Autowired
-    private CategoryGoodMapper categoryGoodMapper;
 
     @Autowired
     private LogClient logClient;
