@@ -296,7 +296,7 @@ public class GoodServiceImpl implements GoodService {
      * @return
      */
     @Override
-    public DataRet<String> checkGood(Long goodId, Integer count, Integer orderFee) {
+    public DataRet<Good> checkGood(Long goodId, Integer count, Integer orderFee) {
         Good good = goodMapper.findById(goodId);
         if (null == good || good.getStock() <= 0) {
             return new DataRet<>("ERROR", "商品库存不足");
@@ -310,7 +310,7 @@ public class GoodServiceImpl implements GoodService {
                 return new DataRet<>("ERROR", "商品信息已过期，请重新下单");
             }
         }
-        return new DataRet<>("校验通过");
+        return new DataRet<>(good);
     }
 
     /**
