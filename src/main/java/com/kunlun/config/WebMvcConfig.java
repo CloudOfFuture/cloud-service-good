@@ -3,6 +3,7 @@ package com.kunlun.config;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+import org.jboss.logging.Logger;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +31,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
+
 
     /**
      * 消息转换

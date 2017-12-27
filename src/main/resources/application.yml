@@ -32,3 +32,6 @@ pagehelper:
   reasonable: false
   support-methods-arguments: true
   params: count=countsql
+logging:
+  level:
+    com.kunlun.api.client.CategoryClient: debug
