@@ -102,7 +102,7 @@ public class SellerGoodController {
     @PostMapping(value = "/findByCondition")
     public PageResult findByCondition(@RequestParam(value = "pageNo") Integer pageNo,
                                       @RequestParam(value = "pageSize") Integer pageSize,
-                                      @RequestParam(value = "userId") Long userId,
+                                      @RequestParam(value = "sellerId") Long sellerId,
                                       @RequestParam(value = "type") String type,
                                       @RequestParam(value = "searchKey", required = false) String searchKey,
                                       @RequestParam(value = "goodNo", required = false) String goodNo,
@@ -114,7 +114,7 @@ public class SellerGoodController {
                                       @RequestParam(value = "hot", required = false) String hot,
                                       @RequestParam(value = "isNew", required = false) String isNew,
                                       @RequestParam(value = "freight", required = false) String freight) {
-        return sellerGoodService.findByCondition(pageNo, pageSize, userId, type, searchKey, goodNo,
+        return sellerGoodService.findByCondition(pageNo, pageSize, sellerId, type, searchKey, goodNo,
                 startDate, endDate, brandId, saleStatus, categoryId, hot, isNew, freight);
     }
 

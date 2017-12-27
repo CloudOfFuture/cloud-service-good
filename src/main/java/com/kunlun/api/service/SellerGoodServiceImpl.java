@@ -205,7 +205,7 @@ public class SellerGoodServiceImpl implements SellerGoodService {
      *
      * @param pageNo     Integer
      * @param pageSize   Integer
-     * @param userId     Long
+     * @param sellerId     Long
      * @param type       UNBIND_CATEGORY 未绑定类目
      *                   UNBIND_ACTIVITY 未绑定活动
      *                   BIND_ACTIVITY 已经绑定活动
@@ -224,7 +224,7 @@ public class SellerGoodServiceImpl implements SellerGoodService {
     @Override
     public PageResult findByCondition(Integer pageNo,
                                       Integer pageSize,
-                                      Long userId,
+                                      Long sellerId,
                                       String type,
                                       String searchKey,
                                       String goodNo,
@@ -236,7 +236,7 @@ public class SellerGoodServiceImpl implements SellerGoodService {
                                       String hot,
                                       String isNew,
                                       String freight) {
-        if (userId == null) {
+        if (sellerId == null) {
             return new PageResult();
         }
         PageHelper.startPage(pageNo, pageSize);
@@ -251,19 +251,19 @@ public class SellerGoodServiceImpl implements SellerGoodService {
         boolean getUnbindActivity = CommonEnum.UNBIND_ACTIVITY.getCode().equals(type);
         if (getUnbindCategory) {
             //未绑定类目的商品列表
-            page = sellerGoodMapper.findForCategory(userId, type, searchKey, goodNo, startDate,
+            page = sellerGoodMapper.findForCategory(sellerId, type, searchKey, goodNo, startDate,
                     endDate, brandId, saleStatus, categoryId, hot, isNew, freight);
         } else if (getBindActivity) {
             //已经绑定活动的商品列表搜索
-            page = sellerGoodMapper.findByActivityId(userId, type, searchKey, goodNo, startDate,
+            page = sellerGoodMapper.findByActivityId(sellerId, type, searchKey, goodNo, startDate,
                     endDate, brandId, saleStatus, categoryId, hot, isNew, freight);
         } else if (getUnbindActivity) {
             //未绑定活动的商品列表
-            page = sellerGoodMapper.findForActivity(userId, type, searchKey, goodNo, startDate,
+            page = sellerGoodMapper.findForActivity(sellerId, type, searchKey, goodNo, startDate,
                     endDate, brandId, saleStatus, categoryId, hot, isNew, freight);
         } else {
             //基础条件查询
-            page = sellerGoodMapper.findByCondition(userId, type, searchKey, goodNo, startDate,
+            page = sellerGoodMapper.findByCondition(sellerId, type, searchKey, goodNo, startDate,
                     endDate, brandId, saleStatus, categoryId, hot, isNew, freight);
         }
         return new PageResult<>(page);

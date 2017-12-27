@@ -95,40 +95,224 @@
         GROUP BY  good.id
     </select>
 
-    <!--分页查询-->
-    <select id="list" resultType="com.kunlun.entity.Good">
+    <!--列表查询-->
+    <select id="list" resultType="com.kunlun.entity.GoodExt">
         SELECT
-        id,
-        good_name,
-        description,
-        promotion,
-        price,
-        sale_volume,
-        discount,
-        stock,
-        on_sale,
-        hot,
-        seo,
-        is_new,
-        freight,
-        brand_id,
-        seller_id,
-        visit_total,
-        good_no,
-        audit,
-        status,
-        rich_content,
-        main_image_url,
-        freight_fee
-        FROM t_good WHERE 1=1
-        <if test="searchKey!=null">AND CONCAT_WS('',good_name,good_no) LIKE #{searchKey}</if>
-        <if test="goodNo!=null">AND good_no=#{goodNo}</if>
-        <if test="onSale!=null">AND on_sale=#{onSale}</if>
-        <if test="hot!=null">AND hot=#{hot}</if>
-        <if test="isNew!=null">AND is_new=#{isNew}</if>
-        <if test="freight!=null">AND freight=#{freight}</if>
-        <if test="brandId!=null">AND brand_id=#{brandId}</if>
-        <if test="categoryId!=null">AND category_id=#{category_id}</if>
+        good.id,
+        good.seo,
+        good.good_no,
+        good.good_name,
+        good.description,
+        good.promotion,
+        good.price,
+        good.sale_volume,
+        good.discount,
+        good.stock,
+        good.on_sale,
+        good.hot,
+        good.audit,
+        good.is_new,
+        good.freight,
+        good.brand_id,
+        good.seller_id,
+        good.visit_total,
+        good.main_image_url,
+        good.rich_content,
+        good.create_date,
+        tacg.activity_id,
+        tac.start_date as startDate,
+        tac.end_date as endDate,
+        tac.status as activityStatus,
+        categorygood.category_id as categoryId,
+        tacg.stock as activityStock
+        FROM t_good good
+        LEFT JOIN t_activity_good tacg ON tacg.good_id=good.id
+        LEFT JOIN t_activity tac ON tac.id=tacg.activity_id
+        LEFT JOIN t_category_good categorygood ON categorygood.good_id=good.id
+        WHERE 1=1
+        AND good.status= 'NORMAL'
+        AND good.seller_id=#{sellerId}
+        <if test="searchKey!=null and searchKey!=''">
+            AND CONCAT_WS('',good.good_name,good.good_no) LIKE #{searchKey}
+        </if>
+        <if test="startDate!=null and endDate!=null">
+            AND good.create_date BETWEEN #{startDate} AND #{endDate}
+        </if>
+        <if test="startDate==null and endDate!=null">
+            AND good.create_date BETWEEN '1970-01-01' AND #{endDate}
+        </if>
+        <if test="startDate!=null and endDate==null">
+            AND good.create_date BETWEEN #{startDate} AND now()
+        </if>
+        <if test="goodNo!=null and goodNo!=''">AND good.good_no= #{goodNo}</if>
+        <if test="saleStatus!=null and saleStatus!=''">AND good.on_sale= #{saleStatus}</if>
+        <if test="hot!=null and hot!=''">AND good.hot= #{hot}</if>
+        <if test="isNew!=null and isNew!=''">AND good.is_new= #{isNew}</if>
+        <if test="isFreight!=null and isFreight!=''">AND good.freight= #{freight}</if>
+        <if test="brandId!=null ">AND good.brand_id= #{brandId}</if>
+        <if test="activityId!=null ">AND tacg.activity_id= #{activityId} AND tacg.status='NORMAL'</if>
+        <if test="categoryId!=null ">AND categorygood.category_id= #{categoryId}</if>
+        <if test="audit!=null and audit!='' ">AND good.audit= #{audit}</if>
+        GROUP BY good.id
+    </select>
+
+    <!--查询未绑定活动的商品-->
+    <select id="findForActivity" resultType="com.kunlun.entity.GoodExt">
+        SELECT
+        good.id,
+        good.seo,
+        good.good_no,
+        good.good_name,
+        good.description,
+        good.promotion,
+        good.price,
+        good.sale_volume,
+        good.discount,
+        good.stock,
+        good.on_sale,
+        good.hot,
+        good.audit,
+        good.is_new,
+        good.freight,
+        good.brand_id,
+        good.seller_id,
+        good.visit_total,
+        good.main_image_url,
+        good.create_date,
+        categorygood.category_id as categoryId,
+        tacg.activity_id as activityId,
+        tacg.stock as activityStock,
+        tac.start_date as startDate,
+        tac.end_date as endDate,
+        tac.status as activityStatus
+        FROM t_good good
+
+        LEFT JOIN t_category_good categorygood ON categorygood.good_id=good.id
+        LEFT JOIN t_activity_good tacg ON tacg.good_id=good.id
+        LEFT JOIN t_activity tac ON (tac.id=tacg.activity_id AND (tac.status IS NULL OR tac.status!='NORMAL' OR
+        tac.end_date BETWEEN '0' AND NOW()) OR tacg.status='UN_NORMAL')
+
+        WHERE
+        good.on_sale='ON_SALE'
+        AND good.status= 'NORMAL'
+        AND good.audit= 'PASS_AUDIT'
+        AND good.seller_id=#{sellerId}
+        AND good.id NOT IN(
+        SELECT tg.id
+        FROM t_good tg
+        LEFT JOIN t_activity_good tag ON tag.good_id=tg.id
+        LEFT JOIN t_activity ta ON ta.id=tag.activity_id
+        WHERE 1=1
+        AND (
+        ta.status='NORMAL' OR ( ta.status!='UN_NORMAL' AND ta.start_date IS NOT NULL
+        AND ( ((ta.start_date BETWEEN '0' AND NOW()) AND ta.end_date > NOW()) OR ta.start_date >NOW() ) )
+        )
+        AND tag.status='NORMAL'
+        GROUP BY tg.id
+        )
+        <if test="searchKey!=null and searchKey!='' ">AND CONCAT_WS('',good.good_name,good.good_no) LIKE #{searchKey}
+        </if>
+        <if test="goodNo!=null ">AND good.good_no= #{goodNo}</if>
+        <if test="categoryId!=null ">AND categorygood.category_id= #{categoryId}</if>
+        <if test="brandId!=null ">AND good.brand_id= #{brandId}</if>
+        GROUP BY good.id
+    </select>
+
+    <!--查询绑定活动的商品列表-->
+    <select id="findByActivityId" resultType="com.kunlun.entity.GoodExt">
+        SELECT
+        good.id,
+        good.seo,
+        good.good_no,
+        good.good_name,
+        good.description,
+        good.promotion,
+        good.price,
+        good.sale_volume,
+        good.discount,
+        good.stock,
+        good.on_sale,
+        good.hot,
+        good.audit,
+        good.is_new,
+        good.freight,
+        good.brand_id,
+        good.seller_id,
+        good.visit_total,
+        good.main_image_url,
+        good.rich_content,
+        good.create_date,
+        categorygood.category_id as categoryId,
+        tacg.activity_id as activityId,
+        tac.start_date as startDate,
+        tac.end_date as endDate,
+        tac.status as activityStatus,
+        tacg.stock as activityStock
+        FROM t_good good
+        LEFT JOIN t_category_good categorygood ON categorygood.good_id=good.id
+        LEFT JOIN t_activity_good tacg ON tacg.good_id=good.id
+        LEFT JOIN t_activity tac ON tac.id=tacg.activity_id
+        WHERE 1=1
+        AND good.status= 'NORMAL'
+        AND good.audit= 'PASS_AUDIT'
+        AND good.seller_id=#{sellerId}
+        AND tac.id=#{activityId}
+        AND tac.status='NORMAL'
+        AND tacg.status='NORMAL'
+        <if test="searchKey!=null and   searchKey!=''">
+            AND CONCAT_WS('',good.good_name,good.good_no) LIKE #{searchKey}
+        </if>
+        <if test="startDate!=null and endDate!=null">AND good.create_date BETWEEN #{startDate} AND #{endDate}</if>
+        <if test="startDate==null and endDate!=null">AND good.create_date BETWEEN '1970-01-01' AND #{endDate}</if>
+        <if test="startDate!=null and endDate==null">AND good.create_date BETWEEN #{startDate} AND now()</if>
+        <if test="saleStatus!=null and saleStatus!=''">AND good.on_sale= #{saleStatus}</if>
+        <if test="hot!=null and hot!=''">AND good.hot= #{hot}</if>
+        <if test="isNew!=null and isNew!=''">AND good.is_new= #{isNew}</if>
+        <if test="isFreight!=null and isFreight!=''">AND good.freight= #{freight}</if>
+        <if test="goodNo!=null and goodNo!=''">AND good.good_no= #{goodNo}</if>
+        <if test="categoryId!=null ">AND categorygood.category_id= #{categoryId}</if>
+        <if test="brandId!=null ">AND good.brand_id= #{brandId}</if>
+        GROUP BY good.id
+    </select>
+
+    <!--查询未绑定类目的商品-->
+    <select id="findForCategory" resultType="com.kunlun.entity.GoodExt">
+        SELECT
+        good.id,
+        good.seo,
+        good.good_no,
+        good.category_id,
+        good.good_name,
+        good.description,
+        good.promotion,
+        good.price,
+        good.sale_volume,
+        good.discount,
+        good.stock,
+        good.on_sale,
+        good.hot,
+        good.audit,
+        good.is_new,
+        good.freight,
+        good.brand_id,
+        good.seller_id,
+        good.visit_total,
+        good.main_image_url,
+        good.create_date
+        FROM t_good good
+        WHERE 1=1
+        AND good.status= 'NORMAL'
+        AND good.audit= 'PASS_AUDIT'
+        AND good.seller_id=#{sellerId}
+        AND NOT EXISTS (
+        SELECT tcg.good_id FROM t_category_good tcg
+        WHERE tcg.good_id =good.id
+        )
+        <if test="searchKey!=null and   searchKey!=''">
+            AND CONCAT_WS('',good.good_name,good.good_no,seo) LIKE #{searchKey}
+        </if>
+        <if test="goodNo!=null ">AND good.good_no= #{goodNo}</if>
+        <if test="brandId!=null ">AND good.brand_id= #{brandId}</if>
     </select>
 
     <!--根据id删除商品-->

@@ -6,11 +6,13 @@ import com.github.pagehelper.util.StringUtil;
 import com.kunlun.api.client.CategoryClient;
 import com.kunlun.api.client.LogClient;
 import com.kunlun.entity.Good;
+import com.kunlun.entity.GoodExt;
 import com.kunlun.entity.GoodLog;
 import com.kunlun.enums.CommonEnum;
 import com.kunlun.api.mapper.GoodMapper;
 import com.kunlun.result.DataRet;
 import com.kunlun.result.PageResult;
+import com.kunlun.utils.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -99,7 +101,10 @@ public class GoodServiceImpl implements GoodService {
     @Override
     public PageResult findByCondition(Integer pageNo, Integer pageSize, String searchKey, String goodNo,
                                       Date startDate, Date endDate, Long brandId, String onSale, Long categoryId,
-                                      String hot, String isNew, String freight) {
+                                      String hot, String isNew, String freight,Long sellerId,String type) {
+        if (sellerId == null) {
+            return new PageResult();
+        }
         if (StringUtil.isEmpty(String.valueOf(pageNo)) || StringUtil.isEmpty(String.valueOf(pageSize))) {
             return new PageResult("ERROR", "参数错误");
         }
@@ -110,8 +115,28 @@ public class GoodServiceImpl implements GoodService {
         if (!StringUtil.isEmpty(searchKey)) {
             searchKey = ("%" + searchKey + "%");
         }
-        Page<Good> page = goodMapper.list(searchKey, goodNo, startDate, endDate, brandId, onSale, categoryId, hot, isNew, freight);
-        return new PageResult(page);
+        Page<GoodExt> page;
+        boolean getUnbindCategory = CommonEnum.UNBIND_CATEGORY.getCode().equals(type);
+        boolean getBindActivity = CommonEnum.BIND_ACTIVITY.getCode().equals(type);
+        boolean getUnbindActivity = CommonEnum.UNBIND_ACTIVITY.getCode().equals(type);
+        if (getUnbindCategory) {
+            //未绑定类目的商品列表
+            page = goodMapper.findForCategory(sellerId, type, searchKey, goodNo, startDate,
+                    endDate, brandId, onSale, categoryId, hot, isNew, freight);
+        } else if (getBindActivity) {
+            //已经绑定活动的商品列表搜索
+            page = goodMapper.findByActivityId(sellerId, type, searchKey, goodNo, startDate,
+                    endDate, brandId, onSale, categoryId, hot, isNew, freight);
+        } else if (getUnbindActivity) {
+            //未绑定活动的商品列表
+            page = goodMapper.findForActivity(sellerId, type, searchKey, goodNo, startDate,
+                    endDate, brandId, onSale, categoryId, hot, isNew, freight);
+        } else {
+            //基础条件查询
+            page = goodMapper.list(sellerId, type, searchKey, goodNo, startDate,
+                    endDate, brandId, onSale, categoryId, hot, isNew, freight);
+        }
+        return new PageResult<>(page);
     }
 
 
