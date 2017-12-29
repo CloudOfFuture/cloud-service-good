@@ -50,7 +50,7 @@ public interface GoodService {
      */
     PageResult findByCondition(Integer pageNo, Integer pageSize, String searchKey, String goodNo,
                                Date startDate, Date endDate, Long brandId, String onSale, Long categoryId,
-                               String hot, String isNew, String freight,Long sellerId,String type);
+                               String hot, String isNew, String freight, Long sellerId, String type);
 
 
     /**
@@ -72,7 +72,7 @@ public interface GoodService {
 
 
     /**
-     *修改商品信息
+     * 修改商品信息
      *
      * @param good
      * @return
@@ -129,4 +129,12 @@ public interface GoodService {
      * @return
      */
     DataRet<Good> checkGood(Long goodId, Integer count, Integer orderFee);
+
+    /**
+     * 修改商品库存
+     *
+     * @param goodList List
+     * @return DataRet
+     */
+    DataRet<String> updateStocks(List<Good> goodList);
 }

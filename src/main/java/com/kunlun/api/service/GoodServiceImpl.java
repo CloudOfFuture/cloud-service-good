@@ -101,7 +101,7 @@ public class GoodServiceImpl implements GoodService {
     @Override
     public PageResult findByCondition(Integer pageNo, Integer pageSize, String searchKey, String goodNo,
                                       Date startDate, Date endDate, Long brandId, String onSale, Long categoryId,
-                                      String hot, String isNew, String freight,Long sellerId,String type) {
+                                      String hot, String isNew, String freight, Long sellerId, String type) {
         if (sellerId == null) {
             return new PageResult();
         }
@@ -336,6 +336,24 @@ public class GoodServiceImpl implements GoodService {
             }
         }
         return new DataRet<>(good);
+    }
+
+    /**
+     * 修改商品库存
+     *
+     * @param goodList List
+     * @return
+     */
+    @Override
+    public DataRet<String> updateStocks(List<Good> goodList) {
+        goodList.forEach(item -> {
+            Integer result = goodMapper.updateStock(item.getId(), item.getStock());
+            if (result == 0) {
+                addGoodLog(item.getGoodName(), "库存修改失败", item.getId());
+            }
+            addGoodLog(item.getGoodName(), "库存修改成功", item.getId());
+        });
+        return new DataRet<>("ERROR", "库存修改成功");
     }
 
     /**
