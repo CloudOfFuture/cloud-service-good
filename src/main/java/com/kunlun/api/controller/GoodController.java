@@ -1,5 +1,6 @@
 package com.kunlun.api.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.kunlun.entity.Good;
 import com.kunlun.api.service.GoodService;
@@ -78,18 +79,18 @@ public class GoodController {
                                       @RequestParam(value = "pageSize") Integer pageSize,
                                       @RequestParam(value = "sellerId") Long sellerId,
                                       @RequestParam(value = "type") String type,
-                                      @RequestParam(value = "searchKey",required = false) String searchKey,
-                                      @RequestParam(value = "goodNo",required = false) String goodNo,
-                                      @RequestParam(value = "startDate",required = false) Date startDate,
-                                      @RequestParam(value = "endDate",required = false) Date endDate,
-                                      @RequestParam(value = "brandId",required = false) Long brandId,
-                                      @RequestParam(value = "onSale",required = false) String onSale,
-                                      @RequestParam(value = "categoryId",required = false) Long categoryId,
-                                      @RequestParam(value = "hot",required = false) String hot,
-                                      @RequestParam(value = "isNew",required = false) String isNew,
-                                      @RequestParam(value = "freight",required = false) String freight) {
+                                      @RequestParam(value = "searchKey", required = false) String searchKey,
+                                      @RequestParam(value = "goodNo", required = false) String goodNo,
+                                      @RequestParam(value = "startDate", required = false) Date startDate,
+                                      @RequestParam(value = "endDate", required = false) Date endDate,
+                                      @RequestParam(value = "brandId", required = false) Long brandId,
+                                      @RequestParam(value = "onSale", required = false) String onSale,
+                                      @RequestParam(value = "categoryId", required = false) Long categoryId,
+                                      @RequestParam(value = "hot", required = false) String hot,
+                                      @RequestParam(value = "isNew", required = false) String isNew,
+                                      @RequestParam(value = "freight", required = false) String freight) {
         return goodService.findByCondition(pageNo, pageSize, searchKey, goodNo, startDate, endDate,
-                brandId, onSale, categoryId, hot, isNew, freight,sellerId,type);
+                brandId, onSale, categoryId, hot, isNew, freight, sellerId, type);
     }
 
     /**
@@ -99,7 +100,7 @@ public class GoodController {
      * @return
      */
     @PostMapping("/deleteById")
-    public DataRet<String> deleteById(@RequestParam(value = "id") Long id){
+    public DataRet<String> deleteById(@RequestParam(value = "id") Long id) {
         return goodService.deleteById(id);
     }
 
@@ -111,7 +112,7 @@ public class GoodController {
      * @return
      */
     @PostMapping("/deleteByIdList")
-    public DataRet<String> deleteByIdList(@RequestBody List<Long>idList){
+    public DataRet<String> deleteByIdList(@RequestBody List<Long> idList) {
         return goodService.deleteByIdList(idList);
     }
 
@@ -123,7 +124,7 @@ public class GoodController {
      * @return
      */
     @PostMapping("/update")
-    public DataRet<String> update(@RequestBody Good good){
+    public DataRet<String> update(@RequestBody Good good) {
         //TODO 图片
         return goodService.update(good);
     }
@@ -138,8 +139,8 @@ public class GoodController {
      */
     @GetMapping("/updateSaleStatus")
     public DataRet<String> updateSaleStatus(@RequestParam(value = "onSale") String onSale,
-                                            @RequestParam(value = "id") Long id){
-        return goodService.updateSaleStatus(onSale,id);
+                                            @RequestParam(value = "id") Long id) {
+        return goodService.updateSaleStatus(onSale, id);
     }
 
 
@@ -150,10 +151,10 @@ public class GoodController {
      * @return
      */
     @PostMapping("/updateSaleList")
-    public DataRet<String> updateSaleList(@RequestBody JSONObject jsonObject){
-        String onSale=jsonObject.getString("onSale");
-        List<Long>goodIdList=jsonObject.getJSONArray("goodIdList").toJavaList(Long.class);
-        return goodService.updateSaleList(onSale,goodIdList);
+    public DataRet<String> updateSaleList(@RequestBody JSONObject jsonObject) {
+        String onSale = jsonObject.getString("onSale");
+        List<Long> goodIdList = jsonObject.getJSONArray("goodIdList").toJavaList(Long.class);
+        return goodService.updateSaleList(onSale, goodIdList);
     }
 
 
@@ -168,8 +169,8 @@ public class GoodController {
     @PostMapping("/audit")
     public DataRet<String> audit(@RequestParam(value = "audit") String audit,
                                  @RequestParam(value = "reason") String reason,
-                                 @RequestParam(value = "id") Long id){
-        return goodService.audit(audit,reason,id);
+                                 @RequestParam(value = "id") Long id) {
+        return goodService.audit(audit, reason, id);
     }
 
 
@@ -181,21 +182,34 @@ public class GoodController {
      * @return
      */
     @PostMapping("/updateStock")
-    public DataRet<String> update(@RequestParam(value = "id") Long id,
-                                  @RequestParam(value = "count") Integer count){
-        return goodService.updateStock(id,count);
+    public DataRet<String> updateStock(@RequestParam(value = "id") Long id,
+                                       @RequestParam(value = "count") Integer count) {
+        return goodService.updateStock(id, count);
+    }
+
+    /**
+     * 修改商品库存
+     *
+     * @param jsonArray JSONArray
+     * @return
+     */
+    @PostMapping("/updateStocks")
+    public DataRet<String> updateStocks(@RequestBody JSONArray jsonArray) {
+        List<Good> goodList = jsonArray.toJavaList(Good.class);
+        return goodService.updateStocks(goodList);
     }
 
     /**
      * 商品信息校验
+     *
      * @param goodId
      * @return
      */
     @GetMapping("/checkGood")
     public DataRet<Good> checkGood(@RequestParam(value = "goodId") Long goodId,
-                                     @RequestParam(value = "count")Integer count,
-                                     @RequestParam(value = "orderFee")Integer orderFee) {
-        return goodService.checkGood(goodId,count,orderFee);
+                                   @RequestParam(value = "count") Integer count,
+                                   @RequestParam(value = "orderFee") Integer orderFee) {
+        return goodService.checkGood(goodId, count, orderFee);
     }
 
 }
