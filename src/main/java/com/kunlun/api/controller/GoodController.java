@@ -3,6 +3,9 @@ package com.kunlun.api.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.kunlun.entity.Good;
 import com.kunlun.api.service.GoodService;
+import com.kunlun.entity.GoodExt;
+import com.kunlun.entity.MallImage;
+import com.kunlun.entity.MallImg;
 import com.kunlun.result.DataRet;
 import com.kunlun.result.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +32,14 @@ public class GoodController {
     /**
      * 创建商品
      *
-     * @param good
+     * @param jsonObject
      * @return
      */
     @PostMapping("/add")
-    public DataRet<String> add(@RequestBody Good good) {
-        //TODO 添加轮播图
+    public DataRet<String> add(@RequestBody JSONObject jsonObject) {
+        GoodExt good=jsonObject.getObject("good",GoodExt.class);
+        List<MallImg>imgList=jsonObject.getJSONArray("imageList").toJavaList(MallImg.class);
+        good.setImgList(imgList);
         return goodService.add(good);
     }
 

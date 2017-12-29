@@ -1,6 +1,7 @@
 package com.kunlun.api.service;
 
 import com.kunlun.entity.Good;
+import com.kunlun.entity.GoodExt;
 import com.kunlun.result.DataRet;
 import com.kunlun.result.PageResult;
 
@@ -20,7 +21,7 @@ public interface GoodService {
      * @param good
      * @return
      */
-    DataRet<String> add(Good good);
+    DataRet<String> add(GoodExt good);
 
     /**
      * 获取详情

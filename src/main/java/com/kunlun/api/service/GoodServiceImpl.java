@@ -4,10 +4,9 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.util.StringUtil;
 import com.kunlun.api.client.CategoryClient;
+import com.kunlun.api.client.FileClient;
 import com.kunlun.api.client.LogClient;
-import com.kunlun.entity.Good;
-import com.kunlun.entity.GoodExt;
-import com.kunlun.entity.GoodLog;
+import com.kunlun.entity.*;
 import com.kunlun.enums.CommonEnum;
 import com.kunlun.api.mapper.GoodMapper;
 import com.kunlun.result.DataRet;
@@ -37,6 +36,9 @@ public class GoodServiceImpl implements GoodService {
     @Autowired
     private CategoryClient categoryClient;
 
+    @Autowired
+    private FileClient fileClient;
+
 
     /**
      * 创建商品
@@ -45,7 +47,7 @@ public class GoodServiceImpl implements GoodService {
      * @return
      */
     @Override
-    public DataRet<String> add(Good good) {
+    public DataRet<String> add(GoodExt good) {
         if (good == null) {
             return new DataRet<>("ERROR", "添加失败");
         }
@@ -53,7 +55,14 @@ public class GoodServiceImpl implements GoodService {
         if (result == 0) {
             return new DataRet<>("ERROR", "添加失败");
         }
-        //TODO 图片
+        List<MallImg> imgList = good.getImgList();
+        if (imgList != null && imgList.size() > 0) {
+            for (MallImg mallImg : imgList) {
+                mallImg.setTargetId(good.getId());
+                mallImg.setType("TYPE_IMG_GOOD");
+                fileClient.add(mallImg);
+            }
+        }
         if (good.getCategoryId() != null) {
             categoryClient.bind(good.getCategoryId(), good.getId());
         }
