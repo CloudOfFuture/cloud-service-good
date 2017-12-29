@@ -83,7 +83,7 @@ public class SellerGoodController {
      *
      * @param pageNo     Integer
      * @param pageSize   Integer
-     * @param userId     Long
+     * @param sellerId     Long
      * @param type       UNBIND_CATEGORY 未绑定类目
      *                   UNBIND_ACTIVITY 未绑定活动
      *                   BIND_ACTIVITY 已经绑定活动
@@ -141,7 +141,7 @@ public class SellerGoodController {
      * @return DataRet
      */
     @PostMapping(value = "/updateGoodStock")
-    public DataRet updateGoodStock(@RequestParam(value = "id") Long id,
+    public DataRet<String> updateGoodStock(@RequestParam(value = "id") Long id,
                                    @RequestParam(value = "count") Integer count) {
         return sellerGoodService.updateGoodStock(id, count);
     }

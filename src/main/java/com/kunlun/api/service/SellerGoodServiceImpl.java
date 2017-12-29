@@ -169,7 +169,7 @@ public class SellerGoodServiceImpl implements SellerGoodService {
      * @return DataRet
      */
     @Override
-    public DataRet updateGoodStock(Long id, Integer count) {
+    public DataRet<String> updateGoodStock(Long id, Integer count) {
         int result = sellerGoodMapper.updateGoodStock(id, count);
         if (result == 0) {
             return new DataRet<>("ERROR", "修改失败");

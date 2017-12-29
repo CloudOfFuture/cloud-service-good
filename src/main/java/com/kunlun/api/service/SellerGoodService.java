@@ -44,7 +44,7 @@ public interface SellerGoodService {
      *
      * @param pageNo
      * @param pageSize
-     * @param userId
+     * @param sellerId
      * @param type       UNBIND_CATEGORY 未绑定类目
      *                   UNBIND_ACTIVITY 未绑定活动
      *                   BIND_ACTIVITY 已经绑定活动
@@ -90,7 +90,7 @@ public interface SellerGoodService {
      * @param count 扣减、增加数量
      * @return DataRet
      */
-    DataRet updateGoodStock(Long id, Integer count);
+    DataRet<String> updateGoodStock(Long id, Integer count);
 
     /**
      * 批量商品上下架
