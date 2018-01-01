@@ -23,4 +23,7 @@ public interface FileClient {
      */
     @PostMapping(value = "/file/add")
      DataRet<String> add(@RequestBody MallImg mallImg);
+
+
+
 }
