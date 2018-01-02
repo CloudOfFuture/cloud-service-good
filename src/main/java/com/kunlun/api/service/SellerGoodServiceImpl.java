@@ -4,9 +4,11 @@ import com.alibaba.druid.util.StringUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.kunlun.api.client.CategoryClient;
+import com.kunlun.api.client.FileClient;
 import com.kunlun.api.client.LogClient;
 import com.kunlun.entity.GoodExt;
 import com.kunlun.entity.GoodLog;
+import com.kunlun.entity.MallImg;
 import com.kunlun.enums.CommonEnum;
 import com.kunlun.api.mapper.SellerGoodMapper;
 import com.kunlun.result.DataRet;
@@ -32,12 +34,14 @@ public class SellerGoodServiceImpl implements SellerGoodService {
     private SellerGoodMapper sellerGoodMapper;
 
 
-
     @Autowired
     private LogClient logClient;
 
     @Autowired
     private CategoryClient categoryClient;
+
+    @Autowired
+    private FileClient fileClient;
 
     /**
      * 新增商品
@@ -55,15 +59,14 @@ public class SellerGoodServiceImpl implements SellerGoodService {
         if (goodExt.getCategoryId() != null) {
             bindCategoryGood(goodExt.getCategoryId(), goodExt.getId());
         }
-//        //更新图片信息
-//        List<MallImage> imgList = goodExt.getImgList();
-//        if (imgList != null && imgList.size() > 0) {
-//            for (MallImage mallImage : imgList) {
-//                mallImage.setGoodId(goodExt.getId());
-//                fileOperationMapper.add(mallImage);
-        //TODO：图片保存
-//            }
-//        }
+        List<MallImg> imgList = goodExt.getImgList();
+        if (imgList != null && imgList.size() > 0) {
+            for (MallImg mallImg : imgList) {
+                mallImg.setType("TYPE_IMG_GOOD");
+                mallImg.setTargetId(goodExt.getId());
+                fileClient.add(mallImg);
+            }
+        }
         saveGoodLog(goodExt.getId(), goodExt.getGoodName(), "新增商品");
         return new DataRet<>("新增成功");
     }
@@ -84,9 +87,11 @@ public class SellerGoodServiceImpl implements SellerGoodService {
             return new DataRet<>("ERROR", "商品不存在");
         }
         //获取图片列表
-//        List<MallImage> imgList = fileOperationMapper.findByTargetId(api.getId(), 0);
-//        api.setImgList(imgList);
-        //TODO：图片查询
+        DataRet imgList = fileClient.list("TYPE_IMG_GOOD", goodId);
+        //判断图片是否为空
+        if (imgList.getBody() != null) {
+            good.setImgList((List<MallImg>) imgList.getBody());
+        }
         return new DataRet<>(good);
     }
 
@@ -125,17 +130,18 @@ public class SellerGoodServiceImpl implements SellerGoodService {
         }
 
         sellerGoodMapper.updateGood(goodExt);
-//        List<MallImage> imgList = goodExt.getImgList();
-//        if (imgList != null && imgList.size() > 0) {
-//            //清空原来的图片
-//            imgList.forEach(item -> fileOperationMapper.deleteById(item.getId()));
-//            //加入新图片
-//            imgList.forEach(item -> {
-//                item.setGoodId(goodExt.getId());
-//                fileOperationMapper.add(item);
-//            });
-        //TODO：图片操作
-//        }
+        // 图片删除更新
+        List<MallImg> imgList = goodExt.getImgList();
+        if (imgList != null && imgList.size() > 0) {
+            for (MallImg mallImg : imgList) {
+                fileClient.deleteById(mallImg.getId());
+            }
+            for (MallImg mallImg : imgList) {
+                mallImg.setType("TYPE_IMG_GOOD");
+                mallImg.setTargetId(goodExt.getId());
+                fileClient.add(mallImg);
+            }
+        }
         saveGoodLog(goodExt.getGoodId(), goodExt.getGoodName(), "修改商品信息");
         return new DataRet<>("修改成功");
     }
@@ -205,7 +211,7 @@ public class SellerGoodServiceImpl implements SellerGoodService {
      *
      * @param pageNo     Integer
      * @param pageSize   Integer
-     * @param sellerId     Long
+     * @param sellerId   Long
      * @param type       UNBIND_CATEGORY 未绑定类目
      *                   UNBIND_ACTIVITY 未绑定活动
      *                   BIND_ACTIVITY 已经绑定活动
@@ -277,7 +283,7 @@ public class SellerGoodServiceImpl implements SellerGoodService {
      * @param goodId     Long
      */
     private void bindCategoryGood(Long categoryId, Long goodId) {
-        categoryClient.bind(categoryId,goodId);
+        categoryClient.bind(categoryId, goodId);
     }
 
     /**
