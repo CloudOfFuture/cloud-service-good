@@ -4,6 +4,7 @@ package com.kunlun.api.service;
 import com.alibaba.druid.util.StringUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.kunlun.api.client.FileClient;
 import com.kunlun.api.mapper.WxGoodSnapShotMapper;
 import com.kunlun.entity.*;
 import com.kunlun.enums.CommonEnum;
@@ -12,6 +13,8 @@ import com.kunlun.result.DataRet;
 import com.kunlun.result.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 /**
@@ -28,6 +31,9 @@ public class WxGoodServiceImpl implements WxGoodService {
 
     @Autowired
     WxGoodSnapShotMapper wxGoodSnapShotMapper;
+
+    @Autowired
+    private FileClient fileClient;
 
 
     /**
@@ -48,10 +54,12 @@ public class WxGoodServiceImpl implements WxGoodService {
         if (CommonEnum.OFF_SALE.getCode().equals(good.getOnSale())) {
             return new DataRet<>("ERROR", "商品已经下架");
         }
-//        //获取banner图片列表
-//        List<MallImage> imgList = fileOperationMapper.findByTargetId(api.getId(), 0);
-//        api.setImgList(imgList);
-        //TODO:获取图片
+        //获取图片列表
+        DataRet imgList = fileClient.list("TYPE_IMG_GOOD", goodId);
+        //判断图片是否为空
+        if (imgList.getBody() != null) {
+            good.setImgList((List<MallImg>) imgList.getBody());
+        }
         wxGoodMapper.updateVisitTotal(goodId);
         return new DataRet<>(good);
     }

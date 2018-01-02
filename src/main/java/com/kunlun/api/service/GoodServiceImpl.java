@@ -4,18 +4,15 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.util.StringUtil;
 import com.kunlun.api.client.CategoryClient;
+import com.kunlun.api.client.FileClient;
 import com.kunlun.api.client.LogClient;
-import com.kunlun.entity.Good;
-import com.kunlun.entity.GoodExt;
-import com.kunlun.entity.GoodLog;
+import com.kunlun.entity.*;
 import com.kunlun.enums.CommonEnum;
 import com.kunlun.api.mapper.GoodMapper;
 import com.kunlun.result.DataRet;
 import com.kunlun.result.PageResult;
-import com.kunlun.utils.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.Date;
 import java.util.List;
@@ -37,6 +34,9 @@ public class GoodServiceImpl implements GoodService {
     @Autowired
     private CategoryClient categoryClient;
 
+    @Autowired
+    private FileClient fileClient;
+
 
     /**
      * 创建商品
@@ -45,7 +45,7 @@ public class GoodServiceImpl implements GoodService {
      * @return
      */
     @Override
-    public DataRet<String> add(Good good) {
+    public DataRet<String> add(GoodExt good) {
         if (good == null) {
             return new DataRet<>("ERROR", "添加失败");
         }
@@ -53,7 +53,14 @@ public class GoodServiceImpl implements GoodService {
         if (result == 0) {
             return new DataRet<>("ERROR", "添加失败");
         }
-        //TODO 图片
+        List<MallImg> imgList = good.getImgList();
+        if (imgList != null && imgList.size() > 0) {
+            for (MallImg mallImg : imgList) {
+                mallImg.setTargetId(good.getId());
+                mallImg.setType("TYPE_IMG_GOOD");
+                fileClient.add(mallImg);
+            }
+        }
         if (good.getCategoryId() != null) {
             categoryClient.bind(good.getCategoryId(), good.getId());
         }
@@ -69,15 +76,20 @@ public class GoodServiceImpl implements GoodService {
      * @return
      */
     @Override
-    public DataRet<Good> findById(Long id) {
+    public DataRet<GoodExt> findById(Long id) {
         if (id == null) {
             return new DataRet<>("ERROR", "id为空");
         }
-        Good good = goodMapper.findById(id);
+        GoodExt good = goodMapper.findById(id);
         if (good == null) {
             return new DataRet<>("ERROR", "未找到");
         }
-        //TODO 获取图片列表
+        //获取图片列表
+        DataRet imgList = fileClient.list("TYPE_IMG_GOOD", id);
+        //判断图片是否为空
+        if (imgList.getBody() != null) {
+            good.setImgList((List<MallImg>) imgList.getBody());
+        }
         return new DataRet<>(good);
     }
 
@@ -101,7 +113,7 @@ public class GoodServiceImpl implements GoodService {
     @Override
     public PageResult findByCondition(Integer pageNo, Integer pageSize, String searchKey, String goodNo,
                                       Date startDate, Date endDate, Long brandId, String onSale, Long categoryId,
-                                      String hot, String isNew, String freight,Long sellerId,String type) {
+                                      String hot, String isNew, String freight, Long sellerId, String type) {
         if (sellerId == null) {
             return new PageResult();
         }
@@ -193,11 +205,11 @@ public class GoodServiceImpl implements GoodService {
      * @return
      */
     @Override
-    public DataRet<String> update(Good good) {
+    public DataRet<String> update(GoodExt good) {
         if (good.getId() == null) {
             return new DataRet<>("ERROR", "参数错误");
         }
-        Good newGood = goodMapper.findById(good.getId());
+        GoodExt newGood = goodMapper.findById(good.getId());
         if (newGood == null) {
             return new DataRet<>("ERROR", "未找到商品");
         }
@@ -211,11 +223,24 @@ public class GoodServiceImpl implements GoodService {
             categoryClient.unbinding(newGood.getId());
             categoryClient.bind(good.getCategoryId(), good.getId());
         }
-        //TODO 图片删除更新
         Integer result = goodMapper.update(good);
         if (result == 0) {
             return new DataRet<>("ERROR", "修改失败");
         }
+        // 图片删除更新
+        List<MallImg> imgList = good.getImgList();
+        if (imgList != null && imgList.size() > 0) {
+            for (MallImg mallImg : imgList) {
+                fileClient.deleteById(mallImg.getId());
+            }
+
+            for (MallImg mallImg : imgList) {
+                mallImg.setTargetId(good.getId());
+                mallImg.setType("TYPE_IMG_GOOD");
+                fileClient.add(mallImg);
+            }
+        }
+        addGoodLog(good.getGoodName(),"修改商品信息",good.getId());
         return new DataRet<>("修改成功");
     }
 
@@ -336,6 +361,18 @@ public class GoodServiceImpl implements GoodService {
             }
         }
         return new DataRet<>(good);
+    }
+
+    /**
+     * 修改商品库存
+     *
+     * @param goodList List
+     * @return
+     */
+    @Override
+    public DataRet<String> updateStocks(List<Good> goodList) {
+        goodList.forEach(item -> goodMapper.updateStock(item.getId(), item.getStock()));
+        return new DataRet<>("ERROR", "库存修改成功");
     }
 
     /**

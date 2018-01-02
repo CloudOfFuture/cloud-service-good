@@ -1,6 +1,7 @@
 package com.kunlun.api.service;
 
 import com.kunlun.entity.Good;
+import com.kunlun.entity.GoodExt;
 import com.kunlun.result.DataRet;
 import com.kunlun.result.PageResult;
 
@@ -20,7 +21,7 @@ public interface GoodService {
      * @param good
      * @return
      */
-    DataRet<String> add(Good good);
+    DataRet<String> add(GoodExt good);
 
     /**
      * 获取详情
@@ -28,7 +29,7 @@ public interface GoodService {
      * @param id
      * @return
      */
-    DataRet<Good> findById(Long id);
+    DataRet<GoodExt> findById(Long id);
 
 
     /**
@@ -50,7 +51,7 @@ public interface GoodService {
      */
     PageResult findByCondition(Integer pageNo, Integer pageSize, String searchKey, String goodNo,
                                Date startDate, Date endDate, Long brandId, String onSale, Long categoryId,
-                               String hot, String isNew, String freight,Long sellerId,String type);
+                               String hot, String isNew, String freight, Long sellerId, String type);
 
 
     /**
@@ -72,12 +73,12 @@ public interface GoodService {
 
 
     /**
-     *修改商品信息
+     * 修改商品信息
      *
      * @param good
      * @return
      */
-    DataRet<String> update(Good good);
+    DataRet<String> update(GoodExt good);
 
 
     /**
@@ -129,4 +130,12 @@ public interface GoodService {
      * @return
      */
     DataRet<Good> checkGood(Long goodId, Integer count, Integer orderFee);
+
+    /**
+     * 修改商品库存
+     *
+     * @param goodList List
+     * @return DataRet
+     */
+    DataRet<String> updateStocks(List<Good> goodList);
 }
