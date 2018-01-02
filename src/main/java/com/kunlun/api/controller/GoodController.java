@@ -126,8 +126,10 @@ public class GoodController {
     @PostMapping("/update")
     public DataRet<String> update(@RequestBody JSONObject jsonObject) {
         GoodExt good = jsonObject.getObject("good", GoodExt.class);
-        List<MallImg> imgList = jsonObject.getJSONArray("imageList").toJavaList(MallImg.class);
-        good.setImgList(imgList);
+        if (jsonObject.containsKey("imageList")){
+            List<MallImg> imgList = jsonObject.getJSONArray("imageList").toJavaList(MallImg.class);
+            good.setImgList(imgList);
+        }
         return goodService.update(good);
     }
 
