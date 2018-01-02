@@ -205,11 +205,11 @@ public class GoodServiceImpl implements GoodService {
      * @return
      */
     @Override
-    public DataRet<String> update(Good good) {
+    public DataRet<String> update(GoodExt good) {
         if (good.getId() == null) {
             return new DataRet<>("ERROR", "参数错误");
         }
-        Good newGood = goodMapper.findById(good.getId());
+        GoodExt newGood = goodMapper.findById(good.getId());
         if (newGood == null) {
             return new DataRet<>("ERROR", "未找到商品");
         }
@@ -223,10 +223,22 @@ public class GoodServiceImpl implements GoodService {
             categoryClient.unbinding(newGood.getId());
             categoryClient.bind(good.getCategoryId(), good.getId());
         }
-        //TODO 图片删除更新
         Integer result = goodMapper.update(good);
         if (result == 0) {
             return new DataRet<>("ERROR", "修改失败");
+        }
+        // 图片删除更新
+        List<MallImg> imgList = good.getImgList();
+        if (imgList != null && imgList.size() > 0) {
+            for (MallImg mallImg : imgList) {
+                fileClient.deleteById(mallImg.getId());
+            }
+
+            for (MallImg mallImg : imgList) {
+                mallImg.setTargetId(good.getId());
+                mallImg.setType("TYPE_IMG_GOOD");
+                fileClient.add(mallImg);
+            }
         }
         return new DataRet<>("修改成功");
     }

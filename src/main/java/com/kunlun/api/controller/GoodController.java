@@ -120,12 +120,12 @@ public class GoodController {
     /**
      * 修改商品
      *
-     * @param good
+     * @param jsonObject
      * @return
      */
     @PostMapping("/update")
-    public DataRet<String> update(@RequestBody Good good) {
-        //TODO 图片
+    public DataRet<String> update(@RequestBody JSONObject jsonObject) {
+        GoodExt good=jsonObject.getObject("good",GoodExt.class);
         return goodService.update(good);
     }
 

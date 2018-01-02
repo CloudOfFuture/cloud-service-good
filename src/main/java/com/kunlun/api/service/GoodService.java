@@ -78,7 +78,7 @@ public interface GoodService {
      * @param good
      * @return
      */
-    DataRet<String> update(Good good);
+    DataRet<String> update(GoodExt good);
 
 
     /**

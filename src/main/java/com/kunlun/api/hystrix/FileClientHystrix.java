@@ -37,4 +37,16 @@ public class FileClientHystrix implements FileClient{
     public DataRet list(String type, Long targetId) {
         return new DataRet<>("ERROR","获取图片列表失败");
     }
+
+
+    /**
+     * 删除图片
+     *
+     * @param id 图片id
+     * @return
+     */
+    @Override
+    public DataRet deleteById(Long id) {
+        return new DataRet("ERROR","删除图片失败");
+    }
 }

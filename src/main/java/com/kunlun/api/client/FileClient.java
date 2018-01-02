@@ -38,4 +38,14 @@ public interface FileClient {
      DataRet list(@RequestParam(value = "type") String type,
                                 @RequestParam(value = "targetId") Long targetId);
 
+
+    /**
+     * 图片删除
+     *
+     * @param id 图片id
+     * @return DataRet
+     */
+    @PostMapping(value = "/deleteById")
+     DataRet deleteById(@RequestParam(value = "id") Long id);
+
 }
