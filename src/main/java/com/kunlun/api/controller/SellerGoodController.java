@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.kunlun.entity.GoodExt;
 import com.kunlun.entity.MallImage;
+import com.kunlun.entity.MallImg;
 import com.kunlun.result.DataRet;
 import com.kunlun.result.PageResult;
 import com.kunlun.api.service.SellerGoodService;
@@ -34,7 +35,7 @@ public class SellerGoodController {
     @PostMapping(value = "/add")
     public DataRet add(@RequestBody JSONObject object) {
         GoodExt goods = object.getObject("api", GoodExt.class);
-        List<MallImage> imgList = object.getJSONArray("imageList").toJavaList(MallImage.class);
+        List<MallImg> imgList = object.getJSONArray("imageList").toJavaList(MallImg.class);
         goods.setImgList(imgList);
         return sellerGoodService.add(goods);
     }
@@ -49,7 +50,7 @@ public class SellerGoodController {
     public DataRet updateGood(@RequestBody JSONObject object) {
         GoodExt goods = object.getObject("api", GoodExt.class);
         if (object.containsKey("imageList")) {
-            List<MallImage> imageList = object.getJSONArray("imageList").toJavaList(MallImage.class);
+            List<MallImg> imageList = object.getJSONArray("imageList").toJavaList(MallImg.class);
             goods.setImgList(imageList);
         }
         return sellerGoodService.updateGood(goods);
