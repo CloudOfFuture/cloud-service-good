@@ -31,7 +31,7 @@ public interface GoodMapper {
      * @param id
      * @return
      */
-    Good findById(@Param("id") Long id);
+    GoodExt findById(@Param("id") Long id);
 
 
     /**

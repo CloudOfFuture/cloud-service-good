@@ -24,4 +24,17 @@ public class FileClientHystrix implements FileClient{
     public DataRet<String> add(MallImg mallImg) {
         return new DataRet<>("ERROR","添加图片失败");
     }
+
+
+    /**
+     * 获取图片列表
+     *
+     * @param type
+     * @param targetId
+     * @return
+     */
+    @Override
+    public DataRet list(String type, Long targetId) {
+        return new DataRet<>("ERROR","获取图片列表失败");
+    }
 }

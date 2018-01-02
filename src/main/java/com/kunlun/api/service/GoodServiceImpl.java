@@ -11,10 +11,8 @@ import com.kunlun.enums.CommonEnum;
 import com.kunlun.api.mapper.GoodMapper;
 import com.kunlun.result.DataRet;
 import com.kunlun.result.PageResult;
-import com.kunlun.utils.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.Date;
 import java.util.List;
@@ -78,15 +76,20 @@ public class GoodServiceImpl implements GoodService {
      * @return
      */
     @Override
-    public DataRet<Good> findById(Long id) {
+    public DataRet<GoodExt> findById(Long id) {
         if (id == null) {
             return new DataRet<>("ERROR", "id为空");
         }
-        Good good = goodMapper.findById(id);
+        GoodExt good = goodMapper.findById(id);
         if (good == null) {
             return new DataRet<>("ERROR", "未找到");
         }
-        //TODO 获取图片列表
+        //获取图片列表
+        DataRet imgList = fileClient.list("TYPE_IMG_GOOD", id);
+        //判断图片是否为空
+        if (imgList.getBody() == null) {
+            good.setImgList((List<MallImg>) imgList.getBody());
+        }
         return new DataRet<>(good);
     }
 

@@ -29,7 +29,7 @@ public interface GoodService {
      * @param id
      * @return
      */
-    DataRet<Good> findById(Long id);
+    DataRet<GoodExt> findById(Long id);
 
 
     /**
