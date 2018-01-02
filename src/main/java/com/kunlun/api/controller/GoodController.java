@@ -38,8 +38,8 @@ public class GoodController {
      */
     @PostMapping("/add")
     public DataRet<String> add(@RequestBody JSONObject jsonObject) {
-        GoodExt good=jsonObject.getObject("good",GoodExt.class);
-        List<MallImg>imgList=jsonObject.getJSONArray("imageList").toJavaList(MallImg.class);
+        GoodExt good = jsonObject.getObject("good", GoodExt.class);
+        List<MallImg> imgList = jsonObject.getJSONArray("imageList").toJavaList(MallImg.class);
         good.setImgList(imgList);
         return goodService.add(good);
     }
@@ -125,7 +125,9 @@ public class GoodController {
      */
     @PostMapping("/update")
     public DataRet<String> update(@RequestBody JSONObject jsonObject) {
-        GoodExt good=jsonObject.getObject("good",GoodExt.class);
+        GoodExt good = jsonObject.getObject("good", GoodExt.class);
+        List<MallImg> imgList = jsonObject.getJSONArray("imageList").toJavaList(MallImg.class);
+        good.setImgList(imgList);
         return goodService.update(good);
     }
 

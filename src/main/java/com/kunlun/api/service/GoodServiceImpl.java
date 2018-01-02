@@ -240,6 +240,7 @@ public class GoodServiceImpl implements GoodService {
                 fileClient.add(mallImg);
             }
         }
+        addGoodLog(good.getGoodName(),"修改商品信息",good.getId());
         return new DataRet<>("修改成功");
     }
 
