@@ -358,13 +358,7 @@ public class GoodServiceImpl implements GoodService {
      */
     @Override
     public DataRet<String> updateStocks(List<Good> goodList) {
-        goodList.forEach(item -> {
-            Integer result = goodMapper.updateStock(item.getId(), item.getStock());
-            if (result == 0) {
-                addGoodLog(item.getGoodName(), "库存修改失败", item.getId());
-            }
-            addGoodLog(item.getGoodName(), "库存修改成功", item.getId());
-        });
+        goodList.forEach(item -> goodMapper.updateStock(item.getId(), item.getStock()));
         return new DataRet<>("ERROR", "库存修改成功");
     }
 
