@@ -3,8 +3,12 @@ server:
 spring:
   application:
     name: cloud-service-good
-cloud:
+  cloud:
     config:
       uri: http://localhost:8762/
       label: master
       profile: dev
+    bus:
+      trace:
+        enabled: true
+

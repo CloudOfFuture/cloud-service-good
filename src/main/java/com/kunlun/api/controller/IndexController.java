@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class IndexController {
 
-    @Value("${spring.datasource.url}")
-    String datasourceUrl;
+    @Value("${foo}")
+    String foo;
 
     @GetMapping("/index/datasource")
     public String datasource() {
-        return "数据库连接地址为：" + datasourceUrl;
+        return "获取的值为：" + foo;
     }
 }

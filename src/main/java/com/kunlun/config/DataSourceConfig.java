@@ -19,7 +19,7 @@ public class DataSourceConfig {
     private String username;
     @Value("${spring.datasource.password}")
     private String password;
-    @Value("${spring.datasource.driverClassName}")
+    @Value("${spring.datasource.driver-class-name}")
     private String driverClassName;
     @Value("${spring.datasource.initialSize}")
     private Integer initialSize;
@@ -33,7 +33,7 @@ public class DataSourceConfig {
     private String filters;
     @Value("${spring.datasource.poolPreparedStatements}")
     private Boolean poolPreparedStatements;
-    @Value("${spring.datasource.maxPoolPreparedStatementPerConnectionSize")
+    @Value("${spring.datasource.maxPoolPreparedStatementPerConnectionSize}")
     private Integer maxPoolPreparedStatementPerConnectionSize;
 
     @Bean
@@ -43,12 +43,12 @@ public class DataSourceConfig {
         dataSource.setUsername(username);
         dataSource.setPassword(password);
         dataSource.setDriverClassName(driverClassName);
-        dataSource.setInitialSize(Integer.valueOf(initialSize));
-        dataSource.setMinIdle(Integer.valueOf(minIdle));
-        dataSource.setMaxWait(Long.valueOf(maxWait));
-        dataSource.setMaxActive(Integer.valueOf(maxActive));
-        dataSource.setPoolPreparedStatements(Boolean.valueOf(poolPreparedStatements));
-        dataSource.setMaxPoolPreparedStatementPerConnectionSize(Integer.valueOf(maxPoolPreparedStatementPerConnectionSize));
+        dataSource.setInitialSize(initialSize);
+        dataSource.setMinIdle(minIdle);
+        dataSource.setMaxWait(maxWait);
+        dataSource.setMaxActive(maxActive);
+        dataSource.setPoolPreparedStatements(poolPreparedStatements);
+        dataSource.setMaxPoolPreparedStatementPerConnectionSize(maxPoolPreparedStatementPerConnectionSize);
         return dataSource;
     }
 
