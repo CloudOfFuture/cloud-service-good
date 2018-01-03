@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.kunlun.entity.Good;
 import com.kunlun.api.service.GoodService;
 import com.kunlun.entity.GoodExt;
-import com.kunlun.entity.MallImage;
 import com.kunlun.entity.MallImg;
 import com.kunlun.result.DataRet;
 import com.kunlun.result.PageResult;
