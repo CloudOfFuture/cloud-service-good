@@ -389,4 +389,5 @@ public class GoodServiceImpl implements GoodService {
         goodLog.setGoodId(goodId);
         logClient.saveGoodLog(goodLog);
     }
+
 }
