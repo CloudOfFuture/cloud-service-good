@@ -216,7 +216,7 @@ public class GoodServiceImpl implements GoodService {
         if (CommonEnum.ON_SALE.getCode().equals(newGood.getOnSale())) {
             return new DataRet<>("ERROR", "上架商品不能修改");
         }
-        if (newGood.getCategoryId() != null && good.getCategoryId() == null) {
+        if (!newGood.getCategoryId().equals(null)  && good.getCategoryId() == null) {
             categoryClient.unbinding(newGood.getId());
         }
         if (newGood.getCategoryId() != good.getCategoryId()) {
