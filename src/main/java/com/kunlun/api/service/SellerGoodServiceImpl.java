@@ -119,7 +119,7 @@ public class SellerGoodServiceImpl implements SellerGoodService {
             return new DataRet<>("ERROR", "商品为上架状态，不能修改");
         }
         boolean unbindFlag = goodExt.getCategoryId() != null && !goodExt.getCategoryId().equals(localGood.getCategoryId());
-        if (!localGood.getCategoryId().equals(null)  && goodExt.getCategoryId() == null) {
+        if (localGood.getCategoryId() != null && goodExt.getCategoryId() == null) {
             //类目解绑
             unbindCategoryGood(localGood.getId());
         } else if (unbindFlag) {

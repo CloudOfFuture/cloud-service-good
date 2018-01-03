@@ -216,10 +216,10 @@ public class GoodServiceImpl implements GoodService {
         if (CommonEnum.ON_SALE.getCode().equals(newGood.getOnSale())) {
             return new DataRet<>("ERROR", "上架商品不能修改");
         }
-        if (!newGood.getCategoryId().equals(null)  && good.getCategoryId() == null) {
+        if (newGood.getCategoryId() != null && good.getCategoryId() == null) {
             categoryClient.unbinding(newGood.getId());
         }
-        if (newGood.getCategoryId() != good.getCategoryId()) {
+        if (!newGood.getCategoryId().equals(good.getCategoryId())) {
             categoryClient.unbinding(newGood.getId());
             categoryClient.bind(good.getCategoryId(), good.getId());
         }
@@ -240,7 +240,7 @@ public class GoodServiceImpl implements GoodService {
                 fileClient.add(mallImg);
             }
         }
-        addGoodLog(good.getGoodName(),"修改商品信息",good.getId());
+        addGoodLog(good.getGoodName(), "修改商品信息", good.getId());
         return new DataRet<>("修改成功");
     }
 
