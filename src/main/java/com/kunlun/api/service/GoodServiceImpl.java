@@ -219,7 +219,7 @@ public class GoodServiceImpl implements GoodService {
         if (newGood.getCategoryId() != null && good.getCategoryId() == null) {
             categoryClient.unbinding(newGood.getId());
         }
-        if (newGood.getCategoryId() != good.getCategoryId()) {
+        if (!newGood.getCategoryId().equals(good.getCategoryId())) {
             categoryClient.unbinding(newGood.getId());
             categoryClient.bind(good.getCategoryId(), good.getId());
         }
@@ -240,7 +240,7 @@ public class GoodServiceImpl implements GoodService {
                 fileClient.add(mallImg);
             }
         }
-        addGoodLog(good.getGoodName(),"修改商品信息",good.getId());
+        addGoodLog(good.getGoodName(), "修改商品信息", good.getId());
         return new DataRet<>("修改成功");
     }
 
