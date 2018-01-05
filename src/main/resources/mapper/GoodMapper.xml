@@ -393,4 +393,9 @@
     <update id="updateStock">
         UPDATE t_good SET stock=stock+#{count} WHERE id=#{id}
     </update>
+
+    <!--修改销量-->
+    <update id="updateSaleVolume">
+        UPDATE t_good SET sale_volume=(sale_volume+#{count}) WHERE id=#{goodId}
+    </update>
 </mapper>

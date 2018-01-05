@@ -215,4 +215,18 @@ public class GoodController {
         return goodService.checkGood(goodId, count, orderFee);
     }
 
+
+    /**
+     * 商品销量
+     *
+     * @param count
+     * @param goodId
+     * @return
+     */
+    @PostMapping("/backstage/good/updateSaleVolume")
+    public DataRet<String> updateSaleVolume(@RequestParam(value = "count") Integer count,
+                                     @RequestParam(value = "goodId") Long goodId){
+        return goodService.updateSaleVolume(count,goodId);
+    }
+
 }

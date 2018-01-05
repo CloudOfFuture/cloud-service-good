@@ -375,6 +375,23 @@ public class GoodServiceImpl implements GoodService {
         return new DataRet<>("ERROR", "库存修改成功");
     }
 
+
+    /**
+     * 商品销量
+     *
+     * @param count
+     * @param goodId
+     * @return
+     */
+    @Override
+    public DataRet<String> updateSaleVolume(Integer count, Long goodId) {
+        Integer result = goodMapper.updateSaleVolume(count, goodId);
+        if (result <= 0) {
+            return new DataRet<>("ERROR","销量更改失败");
+        }
+        return new DataRet<>("销量更改成功");
+    }
+
     /**
      * 添加商品日志
      *

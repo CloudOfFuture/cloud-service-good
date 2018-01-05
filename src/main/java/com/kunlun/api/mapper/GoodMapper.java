@@ -222,4 +222,13 @@ public interface GoodMapper {
      */
     Integer updateStock(@Param("id") Long id,@Param("count") Integer count);
 
+    /**
+     * 商品销量
+     *
+     * @param count
+     * @param goodId
+     * @return
+     */
+    Integer updateSaleVolume(@Param("count") Integer count,
+                             @Param("goodId") Long goodId);
 }
