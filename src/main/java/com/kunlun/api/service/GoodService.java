@@ -26,10 +26,10 @@ public interface GoodService {
     /**
      * 获取详情
      *
-     * @param id
+     * @param goodId
      * @return
      */
-    DataRet<GoodExt> findById(Long id);
+    DataRet<GoodExt> findById(Long goodId);
 
 
     /**

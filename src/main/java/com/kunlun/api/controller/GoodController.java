@@ -51,8 +51,8 @@ public class GoodController {
      * @return
      */
     @GetMapping("/findById")
-    public DataRet<GoodExt> findById(@RequestParam(value = "id") Long id) {
-        return goodService.findById(id);
+    public DataRet<GoodExt> findById(@RequestParam(value = "goodId") Long goodId) {
+        return goodService.findById(goodId);
     }
 
 

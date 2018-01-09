@@ -28,10 +28,10 @@ public interface GoodMapper {
     /**
      * 获取商品详情
      *
-     * @param id
+     * @param goodId
      * @return
      */
-    GoodExt findById(@Param("id") Long id);
+    GoodExt findById(@Param("goodId") Long goodId);
 
 
     /**
