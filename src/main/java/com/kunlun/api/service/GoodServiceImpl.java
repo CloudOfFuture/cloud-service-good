@@ -72,20 +72,20 @@ public class GoodServiceImpl implements GoodService {
     /**
      * 获取商品详情
      *
-     * @param id
+     * @param goodId
      * @return
      */
     @Override
-    public DataRet<GoodExt> findById(Long id) {
-        if (id == null) {
+    public DataRet<GoodExt> findById(Long goodId) {
+        if (goodId == null) {
             return new DataRet<>("ERROR", "id为空");
         }
-        GoodExt good = goodMapper.findById(id);
+        GoodExt good = goodMapper.findById(goodId);
         if (good == null) {
             return new DataRet<>("ERROR", "未找到");
         }
         //获取图片列表
-        DataRet imgList = fileClient.list("TYPE_IMG_GOOD", id);
+        DataRet imgList = fileClient.list("TYPE_IMG_GOOD", goodId);
         //判断图片是否为空
         if (imgList.getBody() != null) {
             good.setImgList((List<MallImg>) imgList.getBody());
