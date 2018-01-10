@@ -172,7 +172,7 @@ public class GoodController {
      */
     @PostMapping("/audit")
     public DataRet<String> audit(@RequestParam(value = "audit") String audit,
-                                 @RequestParam(value = "reason") String reason,
+                                 @RequestParam(value = "reason",required = false) String reason,
                                  @RequestParam(value = "id") Long id) {
         return goodService.audit(audit, reason, id);
     }
