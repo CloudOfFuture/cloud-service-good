@@ -85,10 +85,10 @@ public class GoodServiceImpl implements GoodService {
             return new DataRet<>("ERROR", "未找到");
         }
         //获取图片列表
-        DataRet imgList = fileClient.list("TYPE_IMG_GOOD", goodId);
+        DataRet<List<MallImg>> imgList = fileClient.list("TYPE_IMG_GOOD", goodId);
         //判断图片是否为空
         if (imgList.getBody() != null) {
-            good.setImgList((List<MallImg>) imgList.getBody());
+            good.setImgList( imgList.getBody());
         }
         return new DataRet<>(good);
     }
