@@ -33,7 +33,7 @@ public class SellerGoodController {
      */
     @PostMapping(value = "/add")
     public DataRet add(@RequestBody JSONObject object) {
-        GoodExt goods = object.getObject("api", GoodExt.class);
+        GoodExt goods = object.getObject("goods", GoodExt.class);
         List<MallImg> imgList = object.getJSONArray("imageList").toJavaList(MallImg.class);
         goods.setImgList(imgList);
         return sellerGoodService.add(goods);
