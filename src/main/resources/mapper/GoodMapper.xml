@@ -87,7 +87,8 @@
         good.rich_content,
         good.main_image_url,
         tacg.activity_id as activityId,
-        categorygood.category_id as categoryId
+        categorygood.category_id as categoryId,
+        tacg.stock as activityStock
         FROM t_good good
         LEFT  JOIN t_activity_good  tacg ON tacg.good_id=good.id
         LEFT JOIN t_category_good categorygood ON categorygood.good_id=good.id
