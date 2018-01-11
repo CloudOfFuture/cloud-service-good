@@ -47,7 +47,7 @@ public class SellerGoodController {
      */
     @PostMapping(value = "/update")
     public DataRet updateGood(@RequestBody JSONObject object) {
-        GoodExt goods = object.getObject("api", GoodExt.class);
+        GoodExt goods = object.getObject("goods", GoodExt.class);
         if (object.containsKey("imageList")) {
             List<MallImg> imageList = object.getJSONArray("imageList").toJavaList(MallImg.class);
             goods.setImgList(imageList);
