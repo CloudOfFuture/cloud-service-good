@@ -113,6 +113,14 @@
         WHERE id=#{id}
     </update>
 
+    <!--商品上下架-->
+    <update id="updateSaleStatus">
+        UPDATE t_good SET
+        on_sale=#{onSale},
+        last_update_date=NOW()
+        WHERE id=#{id}
+    </update>
+
     <!--商品批量上下架-->
     <update id="batchUpdateSaleStatus">
         UPDATE t_good SET

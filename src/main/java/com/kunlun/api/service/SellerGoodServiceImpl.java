@@ -232,6 +232,31 @@ public class SellerGoodServiceImpl implements SellerGoodService {
 
 
     /**
+     * 根据id商品上下架
+     *
+     * @param id
+     * @param onSale
+     * @return
+     */
+    @Override
+    public DataRet updateSaleStatus(Long id, String onSale) {
+        GoodExt goodExt=sellerGoodMapper.findById(id);
+        if (goodExt==null){
+            return new DataRet("ERROR","查无结果");
+        }
+        Integer result=sellerGoodMapper.updateSaleStatus(id,onSale);
+        if (result>0){
+            String action = CommonEnum.ON_SALE.getCode().equals(onSale) ? "商品上架成功" : "商品下架成功";
+            saveGoodLog(id,goodExt.getGoodName(),action);
+            return new DataRet(action);
+        }
+        String action = CommonEnum.ON_SALE.getCode().equals(onSale) ? "商品上架失败" : "商品下架失败";
+        saveGoodLog(id,goodExt.getGoodName(),action);
+        return new DataRet("ERROR",action);
+    }
+
+
+    /**
      * 条件查询商品列表
      *
      * @param pageNo     Integer

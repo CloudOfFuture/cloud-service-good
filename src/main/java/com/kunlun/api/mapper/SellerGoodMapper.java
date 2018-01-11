@@ -199,4 +199,13 @@ public interface SellerGoodMapper {
      * @return
      */
     Integer delete(@Param("id") Long id);
+
+    /**
+     * 根据id商品上下架
+     *
+     * @param id
+     * @param onSale
+     * @return
+     */
+    Integer updateSaleStatus(@Param("id") Long id,@Param("onSale") String onSale);
 }
