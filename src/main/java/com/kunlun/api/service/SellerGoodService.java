@@ -100,4 +100,13 @@ public interface SellerGoodService {
      * @return
      */
     DataRet batchUpdateSaleStatus(String saleStatus, List<Long> goodIdList);
+
+
+    /**
+     * 根据id删除商品
+     *
+     * @param id
+     * @return
+     */
+    DataRet delete(Long id);
 }

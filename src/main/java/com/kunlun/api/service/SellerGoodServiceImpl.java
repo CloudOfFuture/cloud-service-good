@@ -205,6 +205,31 @@ public class SellerGoodServiceImpl implements SellerGoodService {
         return new DataRet<>(action + "成功");
     }
 
+    /**
+     * 根据id删除商品
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public DataRet delete(Long id) {
+        if (id==null){
+            return new DataRet("ERROR","参数错误");
+        }
+        //获取商品详情
+        GoodExt goodExt=sellerGoodMapper.findById(id);
+        if (goodExt==null){
+            return new DataRet("ERROR","查无结果");
+        }
+        Integer result=sellerGoodMapper.delete(id);
+        if (result>0){
+            saveGoodLog(id,goodExt.getGoodName(),"删除商品成功");
+            return new DataRet("删除成功");
+        }
+        saveGoodLog(id,goodExt.getGoodName(),"删除商品失败");
+        return new DataRet("ERROR","删除失败");
+    }
+
 
     /**
      * 条件查询商品列表

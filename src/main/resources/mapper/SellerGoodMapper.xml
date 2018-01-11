@@ -136,6 +136,14 @@
         </foreach>
     </update>
 
+    <!--删除商品-->
+    <update id="delete">
+        UPDATE t_good
+        SET status='UN_NORMAL',
+        last_update_date=now()
+        WHERE id=#{id} AND on_sale='OFF_SALE'
+    </update>
+
     <!--库存扣减-->
     <update id="updateGoodStock">
         UPDATE t_good SET

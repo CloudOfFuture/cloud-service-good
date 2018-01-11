@@ -191,4 +191,12 @@ public interface SellerGoodMapper {
                                   @Param("hot") String hot,
                                   @Param("is_new") String isNew,
                                   @Param("freight") String freight);
+
+    /**
+     * 根据id删除商品
+     *
+     * @param id
+     * @return
+     */
+    Integer delete(@Param("id") Long id);
 }
